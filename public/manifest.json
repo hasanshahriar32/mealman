@@ -1,0 +1,95 @@
+{
+  "id": "11",
+  "display_override": ["window-controls-overlay"],
+  "protocol_handlers": [{ "protocol": "mailto", "url": "/newEmail?to=%s" }],
+  "name": "Meal Count Manager",
+  "short_name": "Meal Count",
+  "description": "With Amin Hostel Meal Count Manager, you can easily manage your daily hostel meal count and generate reports. It's gonna be a great experience for you⚡",
+  "theme_color": "#F97316",
+  "background_color": "#FFFFFF",
+  "icons": [
+    {
+      "src": "icon.svg",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "icon.svg",
+      "sizes": "144x144",
+      "type": "image/png"
+    },
+    {
+      "src": "icon.svg",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "icon.svg",
+      "sizes": "1024x1024",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
+  ],
+  "start_url": "/",
+  "display": "standalone",
+  "orientation": "portrait",
+  "screenshots": [
+    {
+      "src": "screenshot.png",
+      "sizes": "450x1024",
+      "type": "image/jpeg"
+    }
+  ],
+  "launch_handler": {
+    "client_mode": ["navigate-existing", "auto"]
+  },
+  "handle_links": "preferred",
+  "dir": "ltr",
+  "prefer_related_applications": true,
+  "related_applications": [
+    {
+      "platform": "webapp",
+      "url": "https://shahriarhasan.vercel.app",
+      "id": "5"
+    }
+  ],
+  "scope": "https://mess.paradox-bd.com",
+  "scope_extensions": [{ "origin": "*.paradox-bd.com" }],
+  "iarc_rating_id": "11",
+  "lang": "en",
+  "categories": ["business", "education", "finance"],
+  "edge_side_panel": {
+    "preferred_width": 400
+  },
+  "file_handlers": [
+    {
+      "action": "/open-pdf",
+      "accept": {
+        "application/pdf": [".pdf"]
+      },
+      "icons": [
+        {
+          "src": "icon.svg",
+          "sizes": "256x256",
+          "type": "image/png"
+        }
+      ],
+      "launch_type": "single-client"
+    },
+    {
+      "action": "/open-link",
+      "accept": {
+        "application/pdf": [".url"]
+      },
+      "icons": [
+        {
+          "src": "icon.svg",
+          "sizes": "256x256",
+          "type": "image/png"
+        }
+      ],
+      "launch_type": "single-client"
+    }
+  ]
+}

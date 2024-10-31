@@ -95,11 +95,12 @@ export const signIn = validatedAction(signInSchema, async (data, formData) => {
 const signUpSchema = z.object({
   email: z.string().email(),
   password: z.string().min(8),
+  name: z.string().optional(),
   inviteId: z.string().optional(),
 });
 
 export const signUp = validatedAction(signUpSchema, async (data, formData) => {
-  const { email, password, inviteId } = data;
+  const { email, password, name, inviteId } = data;
 
   const existingUser = await db
     .select()
@@ -116,6 +117,7 @@ export const signUp = validatedAction(signUpSchema, async (data, formData) => {
   const newUser: NewUser = {
     email,
     passwordHash,
+    name: name || email.split('@')[0],
     role: 'owner', // Default role, will be overridden if there's an invitation
   };
 
@@ -125,78 +127,80 @@ export const signUp = validatedAction(signUpSchema, async (data, formData) => {
     return { error: 'Failed to create user. Please try again.' };
   }
 
-  let teamId: number;
-  let userRole: string;
-  let createdTeam: typeof teams.$inferSelect | null = null;
+  // let teamId: number;
+  // let userRole: string;
+  // let createdTeam: typeof teams.$inferSelect | null = null;
 
-  if (inviteId) {
-    // Check if there's a valid invitation
-    const [invitation] = await db
-      .select()
-      .from(invitations)
-      .where(
-        and(
-          eq(invitations.id, parseInt(inviteId)),
-          eq(invitations.email, email),
-          eq(invitations.status, 'pending')
-        )
-      )
-      .limit(1);
+  // if (inviteId) {
+  //   // Check if there's a valid invitation
+  //   const [invitation] = await db
+  //     .select()
+  //     .from(invitations)
+  //     .where(
+  //       and(
+  //         eq(invitations.id, parseInt(inviteId)),
+  //         eq(invitations.email, email),
+  //         eq(invitations.status, 'pending')
+  //       )
+  //     )
+  //     .limit(1);
 
-    if (invitation) {
-      teamId = invitation.teamId;
-      userRole = invitation.role;
+  //   if (invitation) {
+  //     teamId = invitation.teamId;
+  //     userRole = invitation.role;
 
-      await db
-        .update(invitations)
-        .set({ status: 'accepted' })
-        .where(eq(invitations.id, invitation.id));
+  //     await db
+  //       .update(invitations)
+  //       .set({ status: 'accepted' })
+  //       .where(eq(invitations.id, invitation.id));
 
-      await logActivity(teamId, createdUser.id, ActivityType.ACCEPT_INVITATION);
+  //     await logActivity(teamId, createdUser.id, ActivityType.ACCEPT_INVITATION);
 
-      [createdTeam] = await db
-        .select()
-        .from(teams)
-        .where(eq(teams.id, teamId))
-        .limit(1);
-    } else {
-      return { error: 'Invalid or expired invitation.' };
-    }
-  } else {
-    // Create a new team if there's no invitation
-    const newTeam: NewTeam = {
-      name: `${email}'s Team`,
-    };
+  //     [createdTeam] = await db
+  //       .select()
+  //       .from(teams)
+  //       .where(eq(teams.id, teamId))
+  //       .limit(1);
+  //   } else {
+  //     return { error: 'Invalid or expired invitation.' };
+  //   }
+  // } else {
+  //   // Create a new team if there's no invitation
+  //   const newTeam: NewTeam = {
+  //     name: `${email}'s Team`,
+  //     adminId: 0
+  //   };
 
-    [createdTeam] = await db.insert(teams).values(newTeam).returning();
+  //   [createdTeam] = await db.insert(teams).values(newTeam).returning();
 
-    if (!createdTeam) {
-      return { error: 'Failed to create team. Please try again.' };
-    }
+  //   if (!createdTeam) {
+  //     return { error: 'Failed to create team. Please try again.' };
+  //   }
 
-    teamId = createdTeam.id;
-    userRole = 'owner';
+  //   teamId = createdTeam.id;
+  //   userRole = 'owner';
 
-    await logActivity(teamId, createdUser.id, ActivityType.CREATE_TEAM);
-  }
+  //   await logActivity(teamId, createdUser.id, ActivityType.CREATE_TEAM);
+  // }
 
-  const newTeamMember: NewTeamMember = {
-    userId: createdUser.id,
-    teamId: teamId,
-    role: userRole,
-  };
+  // const newTeamMember: NewTeamMember = {
+  //   userId: createdUser.id,
+  //   teamId: teamId,
+  //   role: userRole,
+  // };
 
   await Promise.all([
-    db.insert(teamMembers).values(newTeamMember),
-    logActivity(teamId, createdUser.id, ActivityType.SIGN_UP),
+    // db.insert(teamMembers).values(newTeamMember),
+    // logActivity(teamId, createdUser.id, ActivityType.SIGN_UP),
+    logActivity(null, createdUser.id, ActivityType.SIGN_UP),
     setSession(createdUser),
   ]);
 
   const redirectTo = formData.get('redirect') as string | null;
-  if (redirectTo === 'checkout') {
-    const priceId = formData.get('priceId') as string;
-    return createCheckoutSession({ team: createdTeam, priceId });
-  }
+  // if (redirectTo === 'checkout') {
+  //   const priceId = formData.get('priceId') as string;
+  //   return createCheckoutSession({ team: createdTeam, priceId });
+  // }
 
   redirect('/dashboard');
 });

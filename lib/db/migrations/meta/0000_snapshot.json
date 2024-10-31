@@ -1,5 +1,5 @@
 {
-  "id": "261fd993-fb2c-43e7-89d6-cd58786c5f58",
+  "id": "947af9be-7327-4d45-b969-ccf75f4c2265",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "version": "7",
   "dialect": "postgresql",
@@ -275,6 +275,30 @@
           "primaryKey": false,
           "notNull": false
         },
+        "admin_id": {
+          "name": "admin_id",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "team_code": {
+          "name": "team_code",
+          "type": "varchar(5)",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "start_date": {
+          "name": "start_date",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "end_date": {
+          "name": "end_date",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": false
+        },
         "plan_name": {
           "name": "plan_name",
           "type": "varchar(50)",
@@ -289,7 +313,21 @@
         }
       },
       "indexes": {},
-      "foreignKeys": {},
+      "foreignKeys": {
+        "teams_admin_id_users_id_fk": {
+          "name": "teams_admin_id_users_id_fk",
+          "tableFrom": "teams",
+          "tableTo": "users",
+          "columnsFrom": [
+            "admin_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        }
+      },
       "compositePrimaryKeys": {},
       "uniqueConstraints": {
         "teams_stripe_customer_id_unique": {
@@ -304,6 +342,13 @@
           "nullsNotDistinct": false,
           "columns": [
             "stripe_subscription_id"
+          ]
+        },
+        "teams_team_code_unique": {
+          "name": "teams_team_code_unique",
+          "nullsNotDistinct": false,
+          "columns": [
+            "team_code"
           ]
         }
       }

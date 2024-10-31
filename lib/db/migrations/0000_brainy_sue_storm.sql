@@ -33,10 +33,15 @@ CREATE TABLE IF NOT EXISTS "teams" (
 	"stripe_customer_id" text,
 	"stripe_subscription_id" text,
 	"stripe_product_id" text,
+	"admin_id" integer NOT NULL,
+	"team_code" varchar(5),
+	"start_date" timestamp,
+	"end_date" timestamp,
 	"plan_name" varchar(50),
 	"subscription_status" varchar(20),
 	CONSTRAINT "teams_stripe_customer_id_unique" UNIQUE("stripe_customer_id"),
-	CONSTRAINT "teams_stripe_subscription_id_unique" UNIQUE("stripe_subscription_id")
+	CONSTRAINT "teams_stripe_subscription_id_unique" UNIQUE("stripe_subscription_id"),
+	CONSTRAINT "teams_team_code_unique" UNIQUE("team_code")
 );
 --> statement-breakpoint
 CREATE TABLE IF NOT EXISTS "users" (
@@ -83,6 +88,12 @@ END $$;
 --> statement-breakpoint
 DO $$ BEGIN
  ALTER TABLE "team_members" ADD CONSTRAINT "team_members_team_id_teams_id_fk" FOREIGN KEY ("team_id") REFERENCES "public"."teams"("id") ON DELETE no action ON UPDATE no action;
+EXCEPTION
+ WHEN duplicate_object THEN null;
+END $$;
+--> statement-breakpoint
+DO $$ BEGIN
+ ALTER TABLE "teams" ADD CONSTRAINT "teams_admin_id_users_id_fk" FOREIGN KEY ("admin_id") REFERENCES "public"."users"("id") ON DELETE no action ON UPDATE no action;
 EXCEPTION
  WHEN duplicate_object THEN null;
 END $$;

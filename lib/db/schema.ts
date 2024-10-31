@@ -42,7 +42,7 @@ export const teamMembers = pgTable('team_members', {
     .references(() => users.id),
   teamId: integer('team_id')
     .notNull()
-    .references(() => teams.teamCode),
+    .references(() => teams.id),
   role: varchar('role', { length: 50 }).notNull(),
   joinedAt: timestamp('joined_at').notNull().defaultNow(),
 });

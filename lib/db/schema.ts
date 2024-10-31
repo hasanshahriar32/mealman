@@ -21,16 +21,16 @@ export const users = pgTable('users', {
 
 export const teams = pgTable('teams', {
   id: serial('id').primaryKey(),
-  teamCode: varchar('team_code', { length: 5 }).unique(),
   name: varchar('name', { length: 100 }).notNull(),
-  adminId: integer('admin_id').notNull().references(() => users.id),
   createdAt: timestamp('created_at').notNull().defaultNow(),
   updatedAt: timestamp('updated_at').notNull().defaultNow(),
   stripeCustomerId: text('stripe_customer_id').unique(),
   stripeSubscriptionId: text('stripe_subscription_id').unique(),
   stripeProductId: text('stripe_product_id'),
-  startDate: timestamp('start_date'),
-  endDate: timestamp('end_date'),
+  // adminId: integer('admin_id').notNull().references(() => users.id),
+  // teamCode: varchar('team_code', { length: 5 }).unique(),
+  // startDate: timestamp('start_date'),
+  // endDate: timestamp('end_date'),
   planName: varchar('plan_name', { length: 50 }),
   subscriptionStatus: varchar('subscription_status', { length: 20 }),
 });

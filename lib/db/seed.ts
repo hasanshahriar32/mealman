@@ -61,7 +61,7 @@ async function seed() {
     .insert(teams)
     .values({
       name: 'Test Team',
-      adminId: user.id,
+      // adminId: user.id,
     })
     .returning();
 

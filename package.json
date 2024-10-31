@@ -50,6 +50,7 @@
     "zod": "^3.23.8"
   },
   "devDependencies": {
+    "@types/react-helmet": "^6.1.11",
     "webpack": "^5.95.0"
   }
 }

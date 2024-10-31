@@ -62,7 +62,7 @@ export const invitations = pgTable('invitations', {
   id: serial('id').primaryKey(),
   teamId: integer('team_id')
     .notNull()
-    .references(() => teams.teamCode),
+    .references(() => teams.id),
   email: varchar('email', { length: 255 }).notNull(),
   role: varchar('role', { length: 50 }).notNull(),
   invitedBy: integer('invited_by')

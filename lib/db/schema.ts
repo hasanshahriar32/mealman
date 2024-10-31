@@ -21,7 +21,7 @@ export const users = pgTable('users', {
 
 export const teams = pgTable('teams', {
   id: serial('id').primaryKey(),
-  teamCode: varchar('team_code', { length: 5 }).unique(),
+  teamCode: varchar('team_code', { length: 5 }).notNull().unique(),
   name: varchar('name', { length: 100 }).notNull(),
   adminId: integer('admin_id').notNull().references(() => users.id),
   createdAt: timestamp('created_at').notNull().defaultNow(),

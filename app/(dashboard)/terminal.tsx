@@ -7,7 +7,7 @@ export function Terminal() {
   const [terminalStep, setTerminalStep] = useState(0);
   const [copied, setCopied] = useState(false);
   const terminalSteps = [
-    'https://youtu.be/1WmXr2b8b1s',
+    'https://t.me/aminhostel',
     // 'git clone https://github.com/leerob/next-saas-starter',
     // 'pnpm install',
     // 'pnpm db:setup',

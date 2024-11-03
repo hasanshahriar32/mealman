@@ -5,24 +5,38 @@ import { Input } from '@/components/ui/input';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Label } from '@/components/ui/label';
 import { Lock, Trash2, Loader2, PlusIcon } from 'lucide-react';
-import { startTransition, useActionState } from 'react';
+import { startTransition, useActionState, useState } from 'react';
 import { updatePassword, deleteAccount } from '@/app/(login)/actions';
-
+import { CalendarIcon } from "@radix-ui/react-icons";
+import { addDays, format, endOfMonth, startOfMonth } from "date-fns";
+import { DateRange } from "react-day-picker";
+import { cn } from "@/lib/utils";
+import { Calendar } from "@/components/ui/calendar";
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/components/ui/popover";
 type ActionState = {
   error?: string;
   success?: string;
 };
 
-export default function SecurityPage() {
+export default function SecurityPage({ className }: React.HTMLAttributes<HTMLDivElement>) {
   const [passwordState, passwordAction, isPasswordPending] = useActionState<
     ActionState,
     FormData
-  >(updatePassword, { error: '', success: '' });
+  >(updatePassword, { error: "", success: "" });
 
   const [deleteState, deleteAction, isDeletePending] = useActionState<
     ActionState,
     FormData
-  >(deleteAccount, { error: '', success: '' });
+  >(deleteAccount, { error: "", success: "" });
+
+  const [date, setDate] = useState<DateRange | undefined>({
+    from: startOfMonth(new Date()), // First date of the current month
+    to: endOfMonth(new Date()), // Last date of the current month
+  });
 
   const handlePasswordSubmit = async (
     event: React.FormEvent<HTMLFormElement>
@@ -40,9 +54,7 @@ export default function SecurityPage() {
     });
   };
 
-  const handleJoinSubmit = async (
-    event: React.FormEvent<HTMLFormElement>
-  ) => {
+  const handleJoinSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     startTransition(() => {
       deleteAction(new FormData(event.currentTarget));
@@ -60,6 +72,46 @@ export default function SecurityPage() {
         </CardHeader>
         <CardContent>
           <form className="space-y-4" onSubmit={handlePasswordSubmit}>
+            <div className={cn("grid gap-2 w-full ", className)}>
+              <Popover>
+                <div className='flex justify-between items-center flex-row-reverse'>
+                  <PopoverTrigger asChild>
+                    <Button
+                      id="date"
+                      variant={"outline"}
+                      className={cn(
+                        "w-full justify-start text-left font-normal",
+                        !date && "text-muted-foreground"
+                      )}
+                    >
+                      <CalendarIcon />
+                      {date?.from ? (
+                        date.to ? (
+                          <>
+                            {format(date.from, "LLL dd, y")} -{" "}
+                            {format(date.to, "LLL dd, y")}
+                          </>
+                        ) : (
+                          format(date.from, "LLL dd, y")
+                        )
+                      ) : (
+                        <span>Pick a date</span>
+                      )}
+                    </Button>
+                  </PopoverTrigger>
+                  <PopoverContent className="w-auto p-0" align="end">
+                    <Calendar
+                      initialFocus
+                      mode="range"
+                      defaultMonth={date?.from}
+                      selected={date}
+                      onSelect={setDate}
+                      numberOfMonths={2}
+                    />
+                  </PopoverContent>
+                </div>
+              </Popover>
+            </div>
             <div>
               <Label htmlFor="current-password">Current Password</Label>
               <Input

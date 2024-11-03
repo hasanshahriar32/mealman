@@ -1,5 +1,5 @@
 {
-  "id": "d72281ee-9c89-43c8-8ed0-36189bc4952d",
+  "id": "8bf6246e-ac44-4efe-819b-ac389f158d76",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "version": "7",
   "dialect": "postgresql",
@@ -16,7 +16,7 @@
         },
         "team_id": {
           "name": "team_id",
-          "type": "integer",
+          "type": "varchar",
           "primaryKey": false,
           "notNull": true
         },
@@ -90,7 +90,7 @@
         },
         "team_id": {
           "name": "team_id",
-          "type": "integer",
+          "type": "varchar",
           "primaryKey": false,
           "notNull": true
         },
@@ -183,7 +183,7 @@
         },
         "team_id": {
           "name": "team_id",
-          "type": "integer",
+          "type": "varchar",
           "primaryKey": false,
           "notNull": true
         },
@@ -305,7 +305,7 @@
           "type": "varchar(5)",
           "primaryKey": false,
           "notNull": true,
-          "default": "'te-st'"
+          "default": "'te_st'"
         },
         "start_date": {
           "name": "start_date",

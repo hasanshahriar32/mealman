@@ -28,49 +28,49 @@ export const teams = pgTable('teams', {
   stripeSubscriptionId: text('stripe_subscription_id').unique(),
   stripeProductId: text('stripe_product_id'),
   adminId: integer('admin_id').notNull().references(() => users.id),
-  teamCode: varchar('team_code', { length: 5 }).unique().notNull().default('te-st'),
+  teamCode: varchar('team_code', { length: 5 }).unique().notNull().default('te_st'),
   startDate: timestamp('start_date'),
   endDate: timestamp('end_date'),
   planName: varchar('plan_name', { length: 50 }),
   subscriptionStatus: varchar('subscription_status', { length: 20 }),
 });
 
-export const teamMembers = pgTable('team_members', {
-  id: serial('id').primaryKey(),
-  adminId: integer('admin_id').references(() => users.id),
-  userId: integer('user_id')
+export const teamMembers = pgTable("team_members", {
+  id: serial("id").primaryKey(),
+  adminId: integer("admin_id").references(() => users.id),
+  userId: integer("user_id")
     .notNull()
     .references(() => users.id),
-  teamId: integer('team_id')
+  teamId: varchar("team_id")
     .notNull()
     .references(() => teams.teamCode),
-  role: varchar('role', { length: 50 }).notNull(),
-  joinedAt: timestamp('joined_at').notNull().defaultNow(),
+  role: varchar("role", { length: 50 }).notNull(),
+  joinedAt: timestamp("joined_at").notNull().defaultNow(),
 });
 
-export const activityLogs = pgTable('activity_logs', {
-  id: serial('id').primaryKey(),
-  teamId: integer('team_id')
+export const activityLogs = pgTable("activity_logs", {
+  id: serial("id").primaryKey(),
+  teamId: varchar("team_id")
     .notNull()
     .references(() => teams.teamCode),
-  userId: integer('user_id').references(() => users.id),
-  action: text('action').notNull(),
-  timestamp: timestamp('timestamp').notNull().defaultNow(),
-  ipAddress: varchar('ip_address', { length: 45 }),
+  userId: integer("user_id").references(() => users.id),
+  action: text("action").notNull(),
+  timestamp: timestamp("timestamp").notNull().defaultNow(),
+  ipAddress: varchar("ip_address", { length: 45 }),
 });
 
-export const invitations = pgTable('invitations', {
-  id: serial('id').primaryKey(),
-  teamId: integer('team_id')
+export const invitations = pgTable("invitations", {
+  id: serial("id").primaryKey(),
+  teamId: varchar("team_id")
     .notNull()
     .references(() => teams.teamCode),
-  email: varchar('email', { length: 255 }).notNull(),
-  role: varchar('role', { length: 50 }).notNull(),
-  invitedBy: integer('invited_by')
+  email: varchar("email", { length: 255 }).notNull(),
+  role: varchar("role", { length: 50 }).notNull(),
+  invitedBy: integer("invited_by")
     .notNull()
     .references(() => users.id),
-  invitedAt: timestamp('invited_at').notNull().defaultNow(),
-  status: varchar('status', { length: 20 }).notNull().default('pending'),
+  invitedAt: timestamp("invited_at").notNull().defaultNow(),
+  status: varchar("status", { length: 20 }).notNull().default("pending"),
 });
 
 export const teamsRelations = relations(teams, ({ many }) => ({

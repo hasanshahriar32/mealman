@@ -1,6 +1,6 @@
 CREATE TABLE IF NOT EXISTS "activity_logs" (
 	"id" serial PRIMARY KEY NOT NULL,
-	"team_id" integer NOT NULL,
+	"team_id" varchar NOT NULL,
 	"user_id" integer,
 	"action" text NOT NULL,
 	"timestamp" timestamp DEFAULT now() NOT NULL,
@@ -9,7 +9,7 @@ CREATE TABLE IF NOT EXISTS "activity_logs" (
 --> statement-breakpoint
 CREATE TABLE IF NOT EXISTS "invitations" (
 	"id" serial PRIMARY KEY NOT NULL,
-	"team_id" integer NOT NULL,
+	"team_id" varchar NOT NULL,
 	"email" varchar(255) NOT NULL,
 	"role" varchar(50) NOT NULL,
 	"invited_by" integer NOT NULL,
@@ -21,7 +21,7 @@ CREATE TABLE IF NOT EXISTS "team_members" (
 	"id" serial PRIMARY KEY NOT NULL,
 	"admin_id" integer,
 	"user_id" integer NOT NULL,
-	"team_id" integer NOT NULL,
+	"team_id" varchar NOT NULL,
 	"role" varchar(50) NOT NULL,
 	"joined_at" timestamp DEFAULT now() NOT NULL
 );
@@ -35,7 +35,7 @@ CREATE TABLE IF NOT EXISTS "teams" (
 	"stripe_subscription_id" text,
 	"stripe_product_id" text,
 	"admin_id" integer NOT NULL,
-	"team_code" varchar(5) DEFAULT 'te-st' NOT NULL,
+	"team_code" varchar(5) DEFAULT 'te_st' NOT NULL,
 	"start_date" timestamp,
 	"end_date" timestamp,
 	"plan_name" varchar(50),

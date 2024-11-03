@@ -52,17 +52,24 @@ const signInSchema = z.object({
 export const signIn = validatedAction(signInSchema, async (data, formData) => {
   const { email, password } = data;
 
-  const userWithTeam = await db
-    .select({
-      user: users,
-      team: teams,
-    })
-    .from(users)
-    .leftJoin(teamMembers, eq(users.id, teamMembers.userId))
-    .leftJoin(teams, eq(teamMembers.teamId, teams.id))
-    .where(eq(users.email, email))
-    .limit(1);
+  let userWithTeam;
+  try {
+    userWithTeam = await db
+      .select({
+        user: users,
+        team: teams,
+      })
+      .from(users)
+      .leftJoin(teamMembers, eq(users?.id, teamMembers?.userId))
+      .leftJoin(teams, eq(teamMembers?.teamId, teams?.teamCode))
+      .where(eq(users.email, email))
+      .limit(1);
+  } catch (error) {
+    console.error('Error fetching user with team:', error);
+    return { error: `An error occurred while signing in. Please try again.` };
+  }
 
+    console.log(userWithTeam);
   if (userWithTeam.length === 0) {
     return { error: 'Invalid email or password. Please try again.' };
   }
@@ -109,7 +116,7 @@ export const signUp = validatedAction(signUpSchema, async (data, formData) => {
     .limit(1);
 
   if (existingUser.length > 0) {
-    return { error: 'Failed to create user. Please try again.' };
+    return { error: "Failed to create user. Please try again." };
   }
 
   const passwordHash = await hashPassword(password);
@@ -117,14 +124,14 @@ export const signUp = validatedAction(signUpSchema, async (data, formData) => {
   const newUser: NewUser = {
     email,
     passwordHash,
-    name: name || email.split('@')[0],
-    role: 'owner', // Default role, will be overridden if there's an invitation
+    name: name || email.split("@")[0],
+    role: "owner", // Default role, will be overridden if there's an invitation
   };
 
   const [createdUser] = await db.insert(users).values(newUser).returning();
 
   if (!createdUser) {
-    return { error: 'Failed to create user. Please try again.' };
+    return { error: "Failed to create user. Please try again." };
   }
 
   // let teamId: number;
@@ -159,7 +166,7 @@ export const signUp = validatedAction(signUpSchema, async (data, formData) => {
   //     [createdTeam] = await db
   //       .select()
   //       .from(teams)
-  //       .where(eq(teams.id, teamId))
+  //       .where(eq(teams.teamCode, teamId))
   //       .limit(1);
   //   } else {
   //     return { error: 'Invalid or expired invitation.' };
@@ -196,13 +203,13 @@ export const signUp = validatedAction(signUpSchema, async (data, formData) => {
     setSession(createdUser),
   ]);
 
-  const redirectTo = formData.get('redirect') as string | null;
+  const redirectTo = formData.get("redirect") as string | null;
   // if (redirectTo === 'checkout') {
   //   const priceId = formData.get('priceId') as string;
   //   return createCheckoutSession({ team: createdTeam, priceId });
   // }
 
-  redirect('/dashboard');
+  redirect("/dashboard");
 });
 
 export async function signOut() {

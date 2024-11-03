@@ -28,7 +28,7 @@ export const teams = pgTable('teams', {
   stripeSubscriptionId: text('stripe_subscription_id').unique(),
   stripeProductId: text('stripe_product_id'),
   adminId: integer('admin_id').notNull().references(() => users.id),
-  teamCode: varchar('team_code', { length: 5 }).unique(),
+  teamCode: varchar('team_code', { length: 5 }).unique().notNull().default('te-st'),
   startDate: timestamp('start_date'),
   endDate: timestamp('end_date'),
   planName: varchar('plan_name', { length: 50 }),
@@ -37,12 +37,13 @@ export const teams = pgTable('teams', {
 
 export const teamMembers = pgTable('team_members', {
   id: serial('id').primaryKey(),
+  adminId: integer('admin_id').references(() => users.id),
   userId: integer('user_id')
     .notNull()
     .references(() => users.id),
   teamId: integer('team_id')
     .notNull()
-    .references(() => teams.id),
+    .references(() => teams.teamCode),
   role: varchar('role', { length: 50 }).notNull(),
   joinedAt: timestamp('joined_at').notNull().defaultNow(),
 });
@@ -51,7 +52,7 @@ export const activityLogs = pgTable('activity_logs', {
   id: serial('id').primaryKey(),
   teamId: integer('team_id')
     .notNull()
-    .references(() => teams.id),
+    .references(() => teams.teamCode),
   userId: integer('user_id').references(() => users.id),
   action: text('action').notNull(),
   timestamp: timestamp('timestamp').notNull().defaultNow(),
@@ -62,7 +63,7 @@ export const invitations = pgTable('invitations', {
   id: serial('id').primaryKey(),
   teamId: integer('team_id')
     .notNull()
-    .references(() => teams.id),
+    .references(() => teams.teamCode),
   email: varchar('email', { length: 255 }).notNull(),
   role: varchar('role', { length: 50 }).notNull(),
   invitedBy: integer('invited_by')
@@ -86,7 +87,7 @@ export const usersRelations = relations(users, ({ many }) => ({
 export const invitationsRelations = relations(invitations, ({ one }) => ({
   team: one(teams, {
     fields: [invitations.teamId],
-    references: [teams.id],
+    references: [teams.teamCode],
   }),
   invitedBy: one(users, {
     fields: [invitations.invitedBy],
@@ -101,14 +102,14 @@ export const teamMembersRelations = relations(teamMembers, ({ one }) => ({
   }),
   team: one(teams, {
     fields: [teamMembers.teamId],
-    references: [teams.id],
+    references: [teams.teamCode],
   }),
 }));
 
 export const activityLogsRelations = relations(activityLogs, ({ one }) => ({
   team: one(teams, {
     fields: [activityLogs.teamId],
-    references: [teams.id],
+    references: [teams.teamCode],
   }),
   user: one(users, {
     fields: [activityLogs.userId],

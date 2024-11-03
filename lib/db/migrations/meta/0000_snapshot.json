@@ -1,5 +1,5 @@
 {
-  "id": "947af9be-7327-4d45-b969-ccf75f4c2265",
+  "id": "d72281ee-9c89-43c8-8ed0-36189bc4952d",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "version": "7",
   "dialect": "postgresql",
@@ -48,15 +48,15 @@
       },
       "indexes": {},
       "foreignKeys": {
-        "activity_logs_team_id_teams_id_fk": {
-          "name": "activity_logs_team_id_teams_id_fk",
+        "activity_logs_team_id_teams_team_code_fk": {
+          "name": "activity_logs_team_id_teams_team_code_fk",
           "tableFrom": "activity_logs",
           "tableTo": "teams",
           "columnsFrom": [
             "team_id"
           ],
           "columnsTo": [
-            "id"
+            "team_code"
           ],
           "onDelete": "no action",
           "onUpdate": "no action"
@@ -129,15 +129,15 @@
       },
       "indexes": {},
       "foreignKeys": {
-        "invitations_team_id_teams_id_fk": {
-          "name": "invitations_team_id_teams_id_fk",
+        "invitations_team_id_teams_team_code_fk": {
+          "name": "invitations_team_id_teams_team_code_fk",
           "tableFrom": "invitations",
           "tableTo": "teams",
           "columnsFrom": [
             "team_id"
           ],
           "columnsTo": [
-            "id"
+            "team_code"
           ],
           "onDelete": "no action",
           "onUpdate": "no action"
@@ -169,6 +169,12 @@
           "primaryKey": true,
           "notNull": true
         },
+        "admin_id": {
+          "name": "admin_id",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false
+        },
         "user_id": {
           "name": "user_id",
           "type": "integer",
@@ -197,6 +203,19 @@
       },
       "indexes": {},
       "foreignKeys": {
+        "team_members_admin_id_users_id_fk": {
+          "name": "team_members_admin_id_users_id_fk",
+          "tableFrom": "team_members",
+          "tableTo": "users",
+          "columnsFrom": [
+            "admin_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        },
         "team_members_user_id_users_id_fk": {
           "name": "team_members_user_id_users_id_fk",
           "tableFrom": "team_members",
@@ -210,15 +229,15 @@
           "onDelete": "no action",
           "onUpdate": "no action"
         },
-        "team_members_team_id_teams_id_fk": {
-          "name": "team_members_team_id_teams_id_fk",
+        "team_members_team_id_teams_team_code_fk": {
+          "name": "team_members_team_id_teams_team_code_fk",
           "tableFrom": "team_members",
           "tableTo": "teams",
           "columnsFrom": [
             "team_id"
           ],
           "columnsTo": [
-            "id"
+            "team_code"
           ],
           "onDelete": "no action",
           "onUpdate": "no action"
@@ -285,7 +304,8 @@
           "name": "team_code",
           "type": "varchar(5)",
           "primaryKey": false,
-          "notNull": false
+          "notNull": true,
+          "default": "'te-st'"
         },
         "start_date": {
           "name": "start_date",

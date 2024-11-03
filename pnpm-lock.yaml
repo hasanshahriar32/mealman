@@ -113,6 +113,9 @@ importers:
       tailwindcss-react-aria-components:
         specifier: 1.1.5
         version: 1.1.5(tailwindcss@3.4.14)
+      tsx:
+        specifier: ^4.19.2
+        version: 4.19.2
       typescript:
         specifier: ^5.6.3
         version: 5.6.3

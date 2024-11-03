@@ -22,7 +22,7 @@ type ActionState = {
   success?: string;
 };
 
-export default function SecurityPage({ className }: React.HTMLAttributes<HTMLDivElement>) {
+export default function SecurityPage() {
   const [passwordState, passwordAction, isPasswordPending] = useActionState<
     ActionState,
     FormData
@@ -72,7 +72,7 @@ export default function SecurityPage({ className }: React.HTMLAttributes<HTMLDiv
         </CardHeader>
         <CardContent>
           <form className="space-y-4" onSubmit={handlePasswordSubmit}>
-            <div className={cn("grid gap-2 w-full ", className)}>
+            <div className={cn("grid gap-2 w-full ")}>
               <Popover>
                 <div className='flex justify-between items-center flex-row-reverse'>
                   <PopoverTrigger asChild>

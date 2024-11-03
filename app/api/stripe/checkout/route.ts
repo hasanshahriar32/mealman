@@ -86,7 +86,7 @@ export async function GET(request: NextRequest) {
         subscriptionStatus: subscription.status,
         updatedAt: new Date(),
       })
-      .where(eq(teams.id, userTeam[0].teamId));
+      .where(eq(teams.id, Number(userTeam[0].teamId)));
 
     await setSession(user[0]);
     return NextResponse.redirect(new URL('/dashboard', request.url));

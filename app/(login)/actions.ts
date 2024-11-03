@@ -27,7 +27,7 @@ import {
 } from '@/lib/auth/middleware';
 
 async function logActivity(
-  teamId: number | null | undefined,
+  teamId: number | null | undefined | string,
   userId: number,
   type: ActivityType,
   ipAddress?: string
@@ -36,7 +36,7 @@ async function logActivity(
     return;
   }
   const newActivity: NewActivityLog = {
-    teamId,
+    teamId: teamId?.toString(),
     userId,
     action: type,
     ipAddress: ipAddress || '',

@@ -28,7 +28,6 @@ export default function JoinSchedulePage() {
   const handleJoinSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     const formData = new FormData(event.currentTarget);
-    console.log(formData); // For debugging purposes
 
     startTransition(() => {
         //@ts-ignore

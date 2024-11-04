@@ -6,6 +6,7 @@ import {
   timestamp,
   integer,
   boolean,
+  pgEnum,
 } from 'drizzle-orm/pg-core';
 import { relations } from 'drizzle-orm';
 
@@ -49,6 +50,27 @@ export const teamMembers = pgTable("team_members", {
   joinedAt: timestamp("joined_at").notNull().defaultNow(),
   isVerified: boolean("is_verified").notNull().default(false),
 });
+
+export const MealType = pgEnum("meal_type", ["breakfast", "lunch", "dinner"]);
+
+export const teamMealDetails = pgTable("team_meal_details", {
+  id: serial("id").primaryKey(),
+  teamId: varchar("team_id")
+    .notNull()
+    .references(() => teams.teamCode),
+  userId: integer("user_id")
+    .notNull()
+    .references(() => users.id),
+  mealType: MealType('meal_type').notNull(), // Enum to restrict to 'breakfast', 'lunch', or 'dinner'
+  mealTime: timestamp("meal_time").notNull().defaultNow(),
+  mealCount: integer("meal_count").notNull().default(1), // Number of meals
+  guestMealCount: integer("guest_meal_count").notNull().default(0), // Number of guest meals
+  comment: text("comment"), // Optional comment for meal details
+  price: integer("price"), // Optional: Track price if needed
+  date: timestamp("date").notNull().defaultNow(), // Date of the meal entry
+  isApproved: boolean("is_approved").notNull().default(false), // Approval status
+});
+
 
 export const activityLogs = pgTable("activity_logs", {
   id: serial("id").primaryKey(),
@@ -118,6 +140,21 @@ export const activityLogsRelations = relations(activityLogs, ({ one }) => ({
     references: [users.id],
   }),
 }));
+
+export const teamMealDetailsRelations = relations(
+  teamMealDetails,
+  ({ one }) => ({
+    team: one(teams, {
+      fields: [teamMealDetails.teamId],
+      references: [teams.teamCode],
+    }),
+    user: one(users, {
+      fields: [teamMealDetails.userId],
+      references: [users.id],
+    }),
+  })
+);
+
 
 export type User = typeof users.$inferSelect;
 export type NewUser = typeof users.$inferInsert;

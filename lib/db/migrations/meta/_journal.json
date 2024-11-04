@@ -22,6 +22,13 @@
       "when": 1730742514695,
       "tag": "0002_closed_lord_hawal",
       "breakpoints": true
+    },
+    {
+      "idx": 3,
+      "version": "7",
+      "when": 1730750880298,
+      "tag": "0003_calm_smiling_tiger",
+      "breakpoints": true
     }
   ]
 }

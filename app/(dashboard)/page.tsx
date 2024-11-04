@@ -2,6 +2,7 @@ import { Button } from '@/components/ui/button';
 import { ArrowRight, CreditCard, Database } from 'lucide-react';
 import { Terminal } from './terminal';
 import  PwaInstall  from '@/components/pwa-install';
+import Link from 'next/link';
 export default function HomePage() {
   return (
     <main>
@@ -17,15 +18,14 @@ export default function HomePage() {
                 With Amin Hostel Meal Count Manager, you can easily manage your daily hostel meal count and generate reports. It's gonna be a great experience for you.
               </p>
               <div className="mt-8 sm:max-w-lg sm:mx-auto sm:text-center lg:text-left lg:mx-0">
-                <a
-                  href="https://vercel.com/templates/next.js/next-js-saas-starter"
-                  target="_blank"
+                <Link
+                  href="/schedule"
                 >
                   <Button className="bg-white hover:bg-gray-100 text-black border border-gray-200 rounded-full text-lg px-8 py-4 inline-flex items-center justify-center">
-                    Deploy your own
+                    Schedule a Demo
                     <ArrowRight className="ml-2 h-5 w-5" />
                   </Button>
-                </a>
+                </Link>
               </div>
             </div>
             <div className="mt-12 relative sm:max-w-lg sm:mx-auto lg:mt-0 lg:max-w-none lg:mx-0 lg:col-span-6 lg:flex lg:items-center">

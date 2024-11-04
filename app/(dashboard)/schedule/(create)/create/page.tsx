@@ -17,6 +17,7 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
+import Link from 'next/link';
 type ActionState = {
   error?: string;
   success?: string;
@@ -27,10 +28,6 @@ export default function SecurityPage() {
   // @ts-ignore
     useActionState<ActionState>(createTeam, { error: "", success: "" });
 
-  const [deleteState, deleteAction, isDeletePending] = useActionState<
-    ActionState,
-    FormData
-  >(deleteAccount, { error: "", success: "" });
 
   const [date, setDate] = useState<DateRange | undefined>({
     from: startOfMonth(new Date()), // First date of the current month
@@ -67,19 +64,10 @@ export default function SecurityPage() {
     });
   };
 
-  const handleJoinSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
-    startTransition(() => {
-      deleteAction(new FormData(event.currentTarget));
-    });
-  };
 
   return (
-    <section className="flex-1 p-4 lg:p-8">
-      <h1 className="text-lg lg:text-2xl font-medium bold text-gray-900 mb-6">
-        Create or Join a Schedule
-      </h1>
-      <Card className="mb-8">
+    <section>
+      <Card className="mb-2">
         <CardHeader>
           <CardTitle>Create a schedule</CardTitle>
         </CardHeader>
@@ -158,7 +146,7 @@ export default function SecurityPage() {
                 </>
               ) : (
                 <>
-                  <FormInput className="mr-2 h-4 w-4" />
+                  <CalendarIcon className="mr-2 h-4 w-4" />
                   Create New Schedule
                 </>
               )}
@@ -166,51 +154,9 @@ export default function SecurityPage() {
           </form>
         </CardContent>
       </Card>
-
-      <Card>
-        <CardHeader>
-          <CardTitle>Join existing Schedule</CardTitle>
-        </CardHeader>
-        <CardContent>
-          <p className="text-sm text-gray-500 mb-4">
-            Enter your manager's code to join the schedule.
-          </p>
-          <form onSubmit={handleJoinSubmit} className="space-y-4">
-            <div>
-              <Label htmlFor="join-manager">Manager Code</Label>
-              <Input
-                id="join-manager"
-                name="joinManager"
-                type="joinManager"
-                required
-                minLength={5}
-                maxLength={10}
-              />
-            </div>
-            {deleteState.error && (
-              <p className="text-red-500 text-sm">{deleteState.error}</p>
-            )}
-            <Button
-              type="submit"
-              variant="destructive"
-              className="bg-red-600 hover:bg-red-700"
-              disabled={isDeletePending}
-            >
-              {isDeletePending ? (
-                <>
-                  <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                  Joining...
-                </>
-              ) : (
-                <>
-                  <PlusIcon className="mr-2 h-4 w-4" />
-                  Join Schedule
-                </>
-              )}
-            </Button>
-          </form>
-        </CardContent>
-      </Card>
+      <Link href="/schedule/join">
+        <Button variant={'link'}>Join existing schedule</Button>
+      </Link>
     </section>
   );
 }

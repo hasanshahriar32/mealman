@@ -1,7 +1,7 @@
 'use server';
 
 import { z } from 'zod';
-import { and, eq, sql } from 'drizzle-orm';
+import { and, eq, is, sql } from 'drizzle-orm';
 import { db } from '@/lib/db/drizzle';
 import {
   User,
@@ -251,6 +251,7 @@ export const createTeam = validatedActionWithUser(
       userId: user.id,
       teamId: createdTeam.teamCode,
       role: 'owner',
+      isVerified: true,
     };
 
     await db.insert(teamMembers).values(newTeamMember);

@@ -5,6 +5,7 @@ import {
   text,
   timestamp,
   integer,
+  boolean,
 } from 'drizzle-orm/pg-core';
 import { relations } from 'drizzle-orm';
 
@@ -46,6 +47,7 @@ export const teamMembers = pgTable("team_members", {
     .references(() => teams.teamCode),
   role: varchar("role", { length: 50 }).notNull(),
   joinedAt: timestamp("joined_at").notNull().defaultNow(),
+  isVerified: boolean("is_verified").notNull().default(false),
 });
 
 export const activityLogs = pgTable("activity_logs", {

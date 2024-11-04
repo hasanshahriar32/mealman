@@ -25,8 +25,7 @@ type ActionState = {
 
 export default function SecurityPage() {
   const [createTeamState, createTeamAction, isCreateTeamPending] =
-  // @ts-ignore
-    useActionState<ActionState>(createTeam, { error: "", success: "" });
+    useActionState<ActionState, FormData>(createTeam, { error: "", success: "" });
 
 
   const [date, setDate] = useState<DateRange | undefined>({

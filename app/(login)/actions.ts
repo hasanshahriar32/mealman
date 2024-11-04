@@ -384,7 +384,63 @@ export const updateAccount = validatedActionWithUser(
     return { success: 'Account updated successfully.' };
   }
 );
+const joinTeamSchema = z.object({
+  teamCode: z.string().min(5, "Invalid team code").max(10),
+});
 
+export const joinTeam = validatedActionWithUser(
+  joinTeamSchema,
+  async (data, _, user) => {
+    const { teamCode } = data;
+
+    // Check if the team exists
+    const team = await db
+      .select()
+      .from(teams)
+      .where(eq(teams.teamCode, teamCode))
+      .limit(1);
+
+    if (team.length === 0) {
+      return { error: "Invalid team code. Please try again." };
+    }
+
+    const [foundTeam] = team;
+
+    // Check if the user is already a member of the team
+    const existingMember = await db
+      .select()
+      .from(teamMembers)
+      .where(
+        and(
+          eq(teamMembers.userId, user.id),
+          eq(teamMembers.teamId, foundTeam.teamCode)
+        )
+      )
+      .limit(1);
+
+    if (existingMember.length > 0) {
+      return { error: "You are already a member of this team." };
+    }
+
+    // Add the user to the team
+    const newTeamMember: NewTeamMember = {
+      userId: user.id,
+      teamId: foundTeam.teamCode,
+      role: "member", // Default role as 'member'
+    };
+
+    await db.insert(teamMembers).values(newTeamMember);
+
+    // Log the activity
+    await logActivity(
+      foundTeam.teamCode,
+      user.id,
+      ActivityType.ACCEPT_INVITATION
+    );
+
+    return { success: "Successfully joined the team!" };
+  }
+);
 const removeTeamMemberSchema = z.object({
   memberId: z.number(),
 });

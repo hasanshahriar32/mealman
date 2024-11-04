@@ -4,9 +4,9 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Label } from '@/components/ui/label';
-import { Lock, Trash2, Loader2, PlusIcon } from 'lucide-react';
+import { Lock, Trash2, Loader2, PlusIcon, FormInput } from 'lucide-react';
 import { startTransition, useActionState, useState } from 'react';
-import { updatePassword, deleteAccount } from '@/app/(login)/actions';
+import { createTeam, deleteAccount } from '@/app/(login)/actions';
 import { CalendarIcon } from "@radix-ui/react-icons";
 import { addDays, format, endOfMonth, startOfMonth } from "date-fns";
 import { DateRange } from "react-day-picker";
@@ -23,10 +23,9 @@ type ActionState = {
 };
 
 export default function SecurityPage() {
-  const [passwordState, passwordAction, isPasswordPending] = useActionState<
-    ActionState,
-    FormData
-  >(updatePassword, { error: "", success: "" });
+  const [createTeamState, createTeamAction, isCreateTeamPending] =
+  // @ts-ignore
+    useActionState<ActionState>(createTeam, { error: "", success: "" });
 
   const [deleteState, deleteAction, isDeletePending] = useActionState<
     ActionState,
@@ -38,19 +37,33 @@ export default function SecurityPage() {
     to: endOfMonth(new Date()), // Last date of the current month
   });
 
-  const handlePasswordSubmit = async (
-    event: React.FormEvent<HTMLFormElement>
-  ) => {
+  const handleTeamSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    // If you call the Server Action directly, it will automatically
-    // reset the form. We don't want that here, because we want to keep the
-    // client-side values in the inputs. So instead, we use an event handler
-    // which calls the action. You must wrap direct calls with startTranstion.
-    // When you use the `action` prop it automatically handles that for you.
-    // Another option here is to persist the values to local storage. I might
-    // explore alternative options.
+
+    const scheduleName = new FormData(event.currentTarget).get("scheduleName");
+    const scheduleData = {
+      name: scheduleName,
+      startDate: date?.from,
+      endDate: date?.to,
+    };
+
+    // Format startDate and endDate with date-fns, including milliseconds
+    const formattedStartDate = date?.from
+      ? format(date.from, "yyyy-MM-dd HH:mm:ss.SSSSSS")
+      : "";
+    const formattedEndDate = date?.to
+      ? format(date.to, "yyyy-MM-dd HH:mm:ss.SSSSSS")
+      : "";
+
+    const newFormData = new FormData();
+    newFormData.append("name", scheduleName as string);
+    newFormData.append("startDate", formattedStartDate as string);
+    newFormData.append("endDate", formattedEndDate as string);
+
+    console.log(newFormData); // For debugging purposes
     startTransition(() => {
-      passwordAction(new FormData(event.currentTarget));
+      // @ts-ignore
+      createTeamAction(newFormData);
     });
   };
 
@@ -64,17 +77,18 @@ export default function SecurityPage() {
   return (
     <section className="flex-1 p-4 lg:p-8">
       <h1 className="text-lg lg:text-2xl font-medium bold text-gray-900 mb-6">
-        Security Settings
+        Create or Join a Schedule
       </h1>
       <Card className="mb-8">
         <CardHeader>
-          <CardTitle>Password</CardTitle>
+          <CardTitle>Create a schedule</CardTitle>
         </CardHeader>
         <CardContent>
-          <form className="space-y-4" onSubmit={handlePasswordSubmit}>
+          <form className="space-y-4" onSubmit={handleTeamSubmit}>
             <div className={cn("grid gap-2 w-full ")}>
               <Popover>
-                <div className='flex justify-between items-center flex-row-reverse'>
+                <Label htmlFor="Team-duration">Team Duration</Label>
+                <div className="flex justify-between items-center flex-row-reverse">
                   <PopoverTrigger asChild>
                     <Button
                       id="date"
@@ -84,7 +98,7 @@ export default function SecurityPage() {
                         !date && "text-muted-foreground"
                       )}
                     >
-                      <CalendarIcon />
+                      {/* <CalendarIcon /> */}
                       {date?.from ? (
                         date.to ? (
                           <>
@@ -113,60 +127,39 @@ export default function SecurityPage() {
               </Popover>
             </div>
             <div>
-              <Label htmlFor="current-password">Current Password</Label>
+              <Label htmlFor="schedule-name">Schedule Name</Label>
               <Input
-                id="current-password"
-                name="currentPassword"
-                type="password"
-                autoComplete="current-password"
+                id="schedule-name"
+                name="scheduleName"
+                type="text"
+                autoComplete="schedule-name"
                 required
-                minLength={8}
+                minLength={1}
                 maxLength={100}
               />
             </div>
-            <div>
-              <Label htmlFor="new-password">New Password</Label>
-              <Input
-                id="new-password"
-                name="newPassword"
-                type="password"
-                autoComplete="new-password"
-                required
-                minLength={8}
-                maxLength={100}
-              />
-            </div>
-            <div>
-              <Label htmlFor="confirm-password">Confirm New Password</Label>
-              <Input
-                id="confirm-password"
-                name="confirmPassword"
-                type="password"
-                required
-                minLength={8}
-                maxLength={100}
-              />
-            </div>
-            {passwordState.error && (
-              <p className="text-red-500 text-sm">{passwordState.error}</p>
+            {createTeamState.error && (
+              <p className="text-red-500 text-sm">{createTeamState.error}</p>
             )}
-            {passwordState.success && (
-              <p className="text-green-500 text-sm">{passwordState.success}</p>
+            {createTeamState.success && (
+              <p className="text-green-500 text-sm">
+                {createTeamState.success}
+              </p>
             )}
             <Button
               type="submit"
               className="bg-orange-500 hover:bg-orange-600 text-white"
-              disabled={isPasswordPending}
+              disabled={isCreateTeamPending}
             >
-              {isPasswordPending ? (
+              {isCreateTeamPending ? (
                 <>
                   <Loader2 className="mr-2 h-4 w-4 animate-spin" />
                   Updating...
                 </>
               ) : (
                 <>
-                  <Lock className="mr-2 h-4 w-4" />
-                  Update Password
+                  <FormInput className="mr-2 h-4 w-4" />
+                  Create New Schedule
                 </>
               )}
             </Button>
@@ -176,7 +169,7 @@ export default function SecurityPage() {
 
       <Card>
         <CardHeader>
-          <CardTitle>Join Manager</CardTitle>
+          <CardTitle>Join existing Schedule</CardTitle>
         </CardHeader>
         <CardContent>
           <p className="text-sm text-gray-500 mb-4">
@@ -211,7 +204,7 @@ export default function SecurityPage() {
               ) : (
                 <>
                   <PlusIcon className="mr-2 h-4 w-4" />
-                  Join Manager
+                  Join Schedule
                 </>
               )}
             </Button>

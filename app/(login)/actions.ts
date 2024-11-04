@@ -25,7 +25,8 @@ import {
   validatedAction,
   validatedActionWithUser,
 } from '@/lib/auth/middleware';
-
+import { addMonths } from 'date-fns';
+import { nanoid } from 'nanoid'; // Import nanoid
 async function logActivity(
   teamId: number | null | undefined | string,
   userId: number,
@@ -211,6 +212,58 @@ export const signUp = validatedAction(signUpSchema, async (data, formData) => {
 
   redirect("/dashboard");
 });
+
+// Schema for creating a team
+const createTeamSchema = z.object({
+  name: z.string().min(1, 'Team name is required').max(100),
+  startDate: z.string(), // Take start date from user input
+  endDate: z.string().optional(), // Take end date from user input
+});
+
+// Function to create a new team
+export const createTeam = validatedActionWithUser(
+  createTeamSchema,
+  async (data, _, user) => {
+    const { name, startDate: startDateString, endDate: endDateString } = data;
+    const startDate = new Date(startDateString);
+    const endDate = endDateString ? new Date(endDateString) : undefined;
+
+    // Generate a unique team code using nanoid
+    const teamCode = nanoid(5);
+
+    // Insert new team into the teams table
+    const newTeam = {
+      name,
+      teamCode, // Add the generated team code here
+      adminId: user.id,
+      startDate,
+      endDate,
+    };
+    const [createdTeam] = await db.insert(teams).values([newTeam]).returning();
+
+
+    if (!createdTeam) {
+      return { error: 'Failed to create team. Please try again.' };
+    }
+
+    // Add the user as the team owner in teamMembers table
+    const newTeamMember = {
+      userId: user.id,
+      teamId: createdTeam.teamCode,
+      role: 'owner',
+    };
+
+    await db.insert(teamMembers).values(newTeamMember);
+
+    // Log the team creation activity
+    await logActivity(createdTeam.teamCode, user.id, ActivityType.CREATE_TEAM);
+
+    return { success: 'Team created successfully', 
+      team: createdTeam 
+    };
+  }
+);
+
 
 export async function signOut() {
   const user = (await getUser()) as User;

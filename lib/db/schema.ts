@@ -29,8 +29,8 @@ export const teams = pgTable('teams', {
   stripeProductId: text('stripe_product_id'),
   adminId: integer('admin_id').notNull().references(() => users.id),
   teamCode: varchar('team_code', { length: 5 }).unique().notNull().default('te_st'),
-  startDate: timestamp('start_date'),
-  endDate: timestamp('end_date'),
+  startDate: timestamp('start_date').notNull().defaultNow(),
+  endDate: timestamp('end_date').notNull().defaultNow(),
   planName: varchar('plan_name', { length: 50 }),
   subscriptionStatus: varchar('subscription_status', { length: 20 }),
 });

@@ -8,6 +8,13 @@
       "when": 1730660365717,
       "tag": "0000_sweet_zaran",
       "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "7",
+      "when": 1730721957051,
+      "tag": "0001_careless_tomorrow_man",
+      "breakpoints": true
     }
   ]
 }

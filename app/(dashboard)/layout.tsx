@@ -3,7 +3,7 @@
 import Link from 'next/link';
 import { useState } from 'react';
 import { Button } from '@/components/ui/button';
-import { CircleIcon, Clock1Icon, Home, LogOut } from 'lucide-react';
+import { CircleIcon, Clock1Icon, Home, InfoIcon, LogOut } from 'lucide-react';
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -70,7 +70,7 @@ function Header() {
                 </DropdownMenuItem>
                 <DropdownMenuItem className="cursor-pointer">
                   <Link href="/posts" className="flex w-full items-center">
-                    <Clock1Icon className="mr-2 h-4 w-4" />
+                    <InfoIcon className="mr-2 h-4 w-4" />
                     <span>Posts</span>
                   </Link>
                 </DropdownMenuItem>

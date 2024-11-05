@@ -35,5 +35,9 @@ export default {
       url: "https://github.com/hasanshahriar32/meal-management",
       name: "Github",
     },
+    {
+      url: "/",
+      name: "🛖",
+    },
   ],
 };

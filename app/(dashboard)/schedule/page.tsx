@@ -1,6 +1,6 @@
 import { redirect } from 'next/navigation';
 import { Settings } from './settings';
-import { getTeamForUser, getUser } from '@/lib/db/queries';
+import { getTeamForUser, getUser, getUsersAllTeams } from '@/lib/db/queries';
 
 export default async function SettingsPage() {
   const user = await getUser();
@@ -10,6 +10,8 @@ export default async function SettingsPage() {
   }
 
   const teamData = await getTeamForUser(user.id);
+  const allTeams = await getUsersAllTeams(user.id);
+  console.log(allTeams);
 
   if (!teamData) {
     throw new Error('Team not found');

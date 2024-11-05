@@ -127,3 +127,31 @@ export async function getTeamForUser(userId: number) {
 
   return result?.teamMembers[0]?.team || null;
 }
+
+export async function getUsersAllTeams(userId: number) {
+  const result =  await db.query.users.findMany({
+    where: eq(users.id, userId),
+    with: {
+      teamMembers: {
+        with: {
+          team: {
+            with: {
+              teamMembers: {
+                with: {
+                  user: {
+                    columns: {
+                      id: true,
+                      name: true,
+                      email: true,
+                    },
+                  },
+                },
+              },
+            },
+          },
+        },
+      },
+    },
+  });
+  return result[0]?.teamMembers.map((tm) => tm.team) || [];
+}

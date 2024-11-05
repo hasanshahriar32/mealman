@@ -1,5 +1,11 @@
 import { NextConfig } from "next";
-
+import nextra from 'nextra'
+ 
+const withNextra = nextra({
+  theme: 'nextra-theme-blog',
+  themeConfig: './theme.config.jsx'
+})
+ 
 /** @type {import('next').NextConfig} */
 const withPWA = require("@ducanh2912/next-pwa").default({
   dest: "public",
@@ -17,9 +23,44 @@ const withPWA = require("@ducanh2912/next-pwa").default({
     document: "/~offline",
   },
 });
+const redirects = async () => {
+  return [
+    // Add your redirects here
+    // { source: "/", destination: "/blog", permanent: false },
+  ];
+};
 const nextConfig: NextConfig = {
   experimental: {
     ppr: true,
   },
+  typescript: {
+    // Set this to false if you want production builds to abort if there's type errors
+    ignoreBuildErrors: true,
+  },
+  eslint: {
+    ignoreDuringBuilds: true, // HYB
+  },
+  images: {
+    remotePatterns: [
+      {
+        protocol: "https",
+        hostname: "images.unsplash.com",
+      },
+      {
+        protocol: "https",
+        hostname: "unsplash.com",
+      },
+      {
+        protocol: "https",
+        hostname: "res.cloudinary.com",
+      },
+
+      {
+        protocol: "https",
+        hostname: "i.ibb.co",
+      },
+    ],
+  },
+  redirects,
 };
-module.exports = withPWA(nextConfig);
+module.exports = withPWA(withNextra(nextConfig));

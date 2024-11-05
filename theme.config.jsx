@@ -37,7 +37,7 @@ export default {
     },
     {
       url: "/",
-      name: "🛖",
+      name: "🏠︎",
     },
   ],
 };

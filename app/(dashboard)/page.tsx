@@ -3,6 +3,7 @@ import { ArrowRight, CreditCard, Database } from 'lucide-react';
 import { Terminal } from './terminal';
 import  PwaInstall  from '@/components/pwa-install';
 import Link from 'next/link';
+import ContactForm from '@/components/contact-form';
 export default function HomePage() {
   return (
     <main>
@@ -108,6 +109,11 @@ export default function HomePage() {
           </div>
         </div>
       </section>
+
+      <section className="py-16 bg-white w-full">
+        <ContactForm />
+      </section>
+      
     </main>
   );
 }

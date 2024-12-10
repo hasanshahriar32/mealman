@@ -30,9 +30,9 @@ const redirects = async () => {
   ];
 };
 const nextConfig: NextConfig = {
-  experimental: {
-    ppr: true,
-  },
+  // experimental: {
+  //   ppr: true,
+  // },
   typescript: {
     // Set this to false if you want production builds to abort if there's type errors
     ignoreBuildErrors: true,
@@ -63,4 +63,5 @@ const nextConfig: NextConfig = {
   },
   redirects,
 };
+//@ts-expect-error
 module.exports = withPWA(withNextra(nextConfig));

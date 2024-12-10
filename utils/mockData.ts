@@ -1,8 +1,8 @@
 export type User = {
   id: number;
   name: string;
-  email: string;
-  role: string;
+  // email: string;
+  // role: string;
 };
 
 export function generateMockData(count: number): User[] {

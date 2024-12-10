@@ -1,24 +1,28 @@
 "use client";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { DataTable } from "./DataTable"
-import { generateMockData } from "@/utils/mockData"
+import { generateMockData, User } from "@/utils/mockData"
+import { TeamDataWithMembers } from "@/lib/db/schema";
 
-export function Dashboard() {
-  const mockData = generateMockData(50); // Generate 50 mock users
+export function Dashboard({ teamData }: { teamData: User[] }) {
+  // const mockData = generateMockData(50); // Generate 50 mock users
+  // console.log(mockData)
 
   return (
     <div className="container mx-auto py-10">
-      <h1 className="text-3xl font-bold mx-5 sm:mx-0 mb-6">All manager list</h1>
+      <h1 className="text-3xl font-bold mx-5 sm:mx-0 mb-6">Joined schedules</h1>
       <Card>
         <CardHeader>
-          <CardTitle>Users</CardTitle>
-          <CardDescription>A list of all users in your organization.</CardDescription>
+          <CardTitle>Schedules</CardTitle>
+          <CardDescription>
+            A list of all users in your organization.
+          </CardDescription>
         </CardHeader>
         <CardContent>
-          <DataTable data={mockData} itemsPerPage={10} />
+          <DataTable data={teamData} itemsPerPage={10} />
         </CardContent>
       </Card>
     </div>
-  )
+  );
 }
 

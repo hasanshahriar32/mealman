@@ -6,10 +6,13 @@ export function usePagination<T>(items: T[], itemsPerPage: number) {
 
   const totalPages = Math.ceil(items.length / itemsPerPage);
 
-  const paginatedItems = items.slice(
+  let paginatedItems: T[] = [];
+  if (items.length > 0 ){
+    paginatedItems = items.slice(
     (currentPage - 1) * itemsPerPage,
     currentPage * itemsPerPage
   );
+}
 
   const goToPage = (page: number) => {
     setCurrentPage(Math.min(Math.max(page, 1), totalPages));

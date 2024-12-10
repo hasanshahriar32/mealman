@@ -12,12 +12,11 @@ export default async function SettingsPage() {
 
   const teamData = await getTeamForUser(user.id);
   const allTeams = await getUsersAllTeams(user.id);
-  console.log(allTeams);
 
   if (!teamData) {
     throw new Error('Team not found');
   }
 
   // return <Settings teamData={teamData} />;
-  return <Dashboard />;
+  return <Dashboard teamData={allTeams} />;
 }

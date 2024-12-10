@@ -10,6 +10,7 @@ import { Button } from "@/components/ui/button"
 import { ChevronLeft, ChevronRight } from 'lucide-react'
 import { User } from "@/utils/mockData"
 import { usePagination } from "@/hooks/usePagination"
+import { TeamDataWithMembers } from "@/lib/db/schema"
 
 interface DataTableProps {
   data: User[];
@@ -26,17 +27,15 @@ export function DataTable({ data, itemsPerPage }: DataTableProps) {
           <TableRow>
             <TableHead>ID</TableHead>
             <TableHead>Name</TableHead>
-            <TableHead>Email</TableHead>
-            <TableHead>Role</TableHead>
+            <TableHead>Option</TableHead>
+            <TableHead>Action</TableHead>
           </TableRow>
         </TableHeader>
         <TableBody>
-          {paginatedItems.map((user) => (
-            <TableRow key={user.id}>
-              <TableCell>{user.id}</TableCell>
-              <TableCell>{user.name}</TableCell>
-              <TableCell>{user.email}</TableCell>
-              <TableCell>{user.role}</TableCell>
+          {paginatedItems?.map((user) => (
+            <TableRow key={user?.id}>
+              <TableCell>{user?.id}</TableCell>
+              <TableCell>{user?.name}</TableCell>
             </TableRow>
           ))}
         </TableBody>

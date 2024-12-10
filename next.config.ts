@@ -62,6 +62,7 @@ const nextConfig: NextConfig = {
     ],
    unoptimized: true,
   },
+ // github pages
   basePath: "/mealman",
   output: "export",
   reactStrictMode: true,

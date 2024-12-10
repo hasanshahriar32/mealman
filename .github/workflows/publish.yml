@@ -1,0 +1,37 @@
+name: Github Page
+
+on:
+  push:
+    branches: [main]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+        
+      - name: Install Packages
+        uses: pnpm/action-setup@v3
+        with:
+          version: 8
+          run_install: true
+          
+      - name: Set Environment Variables
+        env:
+          BASE_PATH: /mealman
+        run: |
+          echo "" > .env.local
+          echo BASE_PATH=$BASE_PATH >> .env.local
+          
+      - name: Build
+        run: pnpm run build
+        
+      - name: Create .nojekyll
+        run: touch ./out/.nojekyll
+        
+      - name: Deploy
+        uses: JamesIves/github-pages-deploy-action@v4
+        with:
+          folder: out

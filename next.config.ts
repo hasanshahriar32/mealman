@@ -63,5 +63,5 @@ const nextConfig: NextConfig = {
   },
   redirects,
 };
-//@ts-expect-error
+//@ts-ignore
 module.exports = withPWA(withNextra(nextConfig));

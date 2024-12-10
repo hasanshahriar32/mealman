@@ -60,7 +60,11 @@ const nextConfig: NextConfig = {
         hostname: "i.ibb.co",
       },
     ],
+   unoptimized: true,
   },
+  basePath: "/mealman",
+  output: "export",
+  reactStrictMode: true,
   redirects,
 };
 module.exports = withPWA(withNextra(nextConfig));

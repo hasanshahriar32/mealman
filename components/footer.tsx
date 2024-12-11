@@ -1,6 +1,7 @@
 import Link from 'next/link'
 
 export default function Footer() {
+  const baseUrl = process.env.BASE_URL || "http://mealman.vercel.app";
   return (
     <footer className="bg-gray-100 border-t">
       <div className="max-w-7xl mx-auto px-4 py-6 sm:px-6 lg:px-8">
@@ -13,12 +14,18 @@ export default function Footer() {
                 </Link>
               </li>
               <li>
-                <Link href="/about" className="text-gray-600 hover:text-gray-900">
+                <Link
+                  href="/about"
+                  className="text-gray-600 hover:text-gray-900"
+                >
                   About
                 </Link>
               </li>
               <li>
-                <Link href="/posts" className="text-gray-600 hover:text-gray-900">
+                <Link
+                  href="/posts"
+                  className="text-gray-600 hover:text-gray-900"
+                >
                   Posts
                 </Link>
               </li>
@@ -26,15 +33,16 @@ export default function Footer() {
           </nav>
           <div className="text-center md:text-right">
             <p className="text-sm text-gray-500">
-              &copy; {new Date().getFullYear()} Paradox Tech BD. All rights reserved.
+              &copy; {new Date().getFullYear()} Paradox Tech BD. All rights
+              reserved.
             </p>
             <p className="text-xs text-gray-400 mt-1">
-              Developed by Shahriar Hasan
+              Developed by <Link href={`https://shahriarhasan.vercel.app?ref=${baseUrl}`} target="_blank" rel="noopener noreferrer">Shahriar Hasan</Link>
             </p>
           </div>
         </div>
       </div>
     </footer>
-  )
+  );
 }
 

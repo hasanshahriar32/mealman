@@ -41,7 +41,7 @@ export default function Document() {
                 script.setAttribute('data-strict', '0');
                 script.setAttribute('data-reactions-enabled', '1');
                 script.setAttribute('data-input-position', 'top');
-                script.setAttribute('data-theme', 'light');
+                script.setAttribute('data-theme', 'dark_dimmed');
                 script.setAttribute('data-lang', 'en');
                 document.getElementById('giscus-container').appendChild(script);
               })();

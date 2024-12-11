@@ -4,7 +4,7 @@ export default {
   footer: (
     <small style={{ display: "block", marginTop: "8rem" }}>
       <time>{YEAR}</time> © Paradox Tech BD.
-      <a href="/feed.xml">RSS</a>
+      <a href="https://github.com/hasanshahriar32/mealman">GitHub</a>
       <style jsx>{`
         a {
           float: right;

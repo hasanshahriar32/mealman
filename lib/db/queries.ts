@@ -155,3 +155,39 @@ export async function getUsersAllTeams(userId: number) {
   });
   return result[0]?.teamMembers.map((tm) => tm.team) || [];
 }
+
+
+export async function getTeamDetail(teamId: number) {
+  const user = await getUser();
+  if (!user) {
+    throw new Error('User not authenticated');
+  }
+
+  const team = await db.query.teams.findFirst({
+    where: and(eq(teams.id, teamId)),
+    with: {
+      teamMembers: {
+        with: {
+          user: {
+            columns: {
+              id: true,
+              name: true,
+              email: true,
+            },
+          },
+        },
+      },
+    },
+  });
+
+  // check if user is a member of the team
+  if (!team || !team.teamMembers.some((tm) => tm.userId === user.id)) {
+    throw new Error('Team not found or user is not a member of the team');
+  }
+
+  if (!team) {
+    throw new Error('Team not found or user is not a member of the team');
+  }
+
+  return team;
+}

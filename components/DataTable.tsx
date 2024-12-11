@@ -7,10 +7,11 @@ import {
   TableRow,
 } from "@/components/ui/table"
 import { Button } from "@/components/ui/button"
-import { ChevronLeft, ChevronRight } from 'lucide-react'
+import { ArrowUpFromLineIcon, ArrowUpRightFromCircleIcon, ChevronLeft, ChevronRight } from 'lucide-react'
 import { User } from "@/utils/mockData"
 import { usePagination } from "@/hooks/usePagination"
 import { TeamDataWithMembers } from "@/lib/db/schema"
+import Link from "next/link"
 
 interface DataTableProps {
   data: User[];
@@ -36,6 +37,19 @@ export function DataTable({ data, itemsPerPage }: DataTableProps) {
             <TableRow key={user?.id}>
               <TableCell>{user?.id}</TableCell>
               <TableCell>{user?.name}</TableCell>
+              <TableCell>
+                <Link
+                  className="flex hover:text-blue-700 flex-row items-center justify-center gap-1"
+                  href={`schedule/details/${user?.id}`}
+                >
+                  Detail <ArrowUpRightFromCircleIcon className="w-3 h-3" />
+                </Link>
+              </TableCell>
+              <TableCell>
+                <Button variant="outline" size="sm">
+                  Edit
+                </Button>
+              </TableCell>
             </TableRow>
           ))}
         </TableBody>
@@ -66,6 +80,6 @@ export function DataTable({ data, itemsPerPage }: DataTableProps) {
         </div>
       </div>
     </div>
-  )
+  );
 }
 

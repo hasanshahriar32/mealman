@@ -1,5 +1,4 @@
 import { Html, Head, Main, NextScript } from 'next/document'
-import Giscus from '../components/Giscus'
 
 export default function Document() {
   const meta = {
@@ -26,8 +25,23 @@ export default function Document() {
       <body>
         <Main />
         <NextScript />
-        <Giscus />
+        <Head>
+          <script
+            src="https://giscus.app/client.js"
+            data-repo="hasanshahriar32/mealman"
+            data-repo-id="R_kgDONIa5xg"
+            data-category-id="DIC_kwDONIa5xs4ClHoR"
+            data-mapping="pathname"
+            data-strict="0"
+            data-reactions-enabled="1"
+            data-input-position="top"
+            data-theme="light"
+            data-lang="en"
+            crossOrigin="anonymous"
+            async
+          ></script>
+        </Head>
       </body>
     </Html>
-  )
+  );
 }

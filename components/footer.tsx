@@ -1,7 +1,7 @@
 import Link from 'next/link'
 
 export default function Footer() {
-  const baseUrl = process.env.BASE_URL || "http://mealman.vercel.app";
+  const baseUrl = process.env.BASE_URL || "https://mealman.vercel.app";
   return (
     <footer className="bg-gray-100 border-t">
       <div className="max-w-7xl mx-auto px-4 py-6 sm:px-6 lg:px-8">
@@ -37,7 +37,15 @@ export default function Footer() {
               reserved.
             </p>
             <p className="text-xs text-gray-400 mt-1">
-              Developed by <Link href={`https://shahriarhasan.vercel.app?ref=${baseUrl}`} target="_blank" rel="noopener noreferrer">Shahriar Hasan</Link>
+              Developed by{" "}
+              <Link
+                className="border-b text-gray-400 hover:text-gray-600"
+                href={`https://shahriarhasan.vercel.app?ref=${baseUrl}`}
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                Shahriar Hasan
+              </Link>
             </p>
           </div>
         </div>

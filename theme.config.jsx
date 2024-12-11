@@ -3,7 +3,7 @@ const YEAR = new Date().getFullYear()
 export default {
   footer: (
     <small style={{ display: "block", marginTop: "8rem" }}>
-      <time>{YEAR}</time> © Your Name.
+      <time>{YEAR}</time> © Paradox Tech BD.
       <a href="/feed.xml">RSS</a>
       <style jsx>{`
         a {
@@ -31,13 +31,13 @@ export default {
   postFooter: null,
   darkMode: true,
   navs: [
-    {
-      url: "https://github.com/hasanshahriar32/meal-management",
-      name: "Github",
-    },
+    // {
+    //   url: "https://github.com/hasanshahriar32/meal-management",
+    //   name: "Github",
+    // },
     {
       url: "/",
-      name: "🏠︎",
+      name: "Home",
     },
   ],
 };

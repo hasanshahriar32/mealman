@@ -12,6 +12,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 
 import { MealListTable } from './meal-list-table'
 import { TeamCalendar } from './team-calendar'
+import { useRouter } from 'next/navigation'
 
 interface TeamMember {
   id: number
@@ -104,6 +105,7 @@ interface TeamData {
 // }
 export default function TeamDashboard({ teamData }: { teamData: TeamData }) {
   const [team, setTeam] = useState<TeamData>(teamData)
+  const router = useRouter()
 
   const formatDate = (dateString: string) => {
     return format(new Date(dateString), 'MMM dd, yyyy')
@@ -194,10 +196,11 @@ export default function TeamDashboard({ teamData }: { teamData: TeamData }) {
             </TabsContent>
           </Tabs>
         </CardContent>
-        <CardFooter>
+        <CardFooter className="flex flex-col md:flex-row gap-2 items-center justify-between">
           <Button className="w-full" disabled={!!team.subscriptionStatus}>
             {team.subscriptionStatus ? 'Manage Subscription' : 'Subscribe Now'}
           </Button>
+          <Button variant="outline" onClick={()=>router.back()} className="w-full "> Return </Button>
         </CardFooter>
       </Card>
     </div>

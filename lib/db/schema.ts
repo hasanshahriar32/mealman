@@ -7,6 +7,7 @@ import {
   integer,
   boolean,
   pgEnum,
+  unique,
 } from 'drizzle-orm/pg-core';
 import { relations } from 'drizzle-orm';
 
@@ -53,23 +54,35 @@ export const teamMembers = pgTable("team_members", {
 
 export const MealType = pgEnum("meal_type", ["breakfast", "lunch", "dinner"]);
 
-export const teamMealDetails = pgTable("team_meal_details", {
-  id: serial("id").primaryKey(),
-  teamId: varchar("team_id")
-    .notNull()
-    .references(() => teams.teamCode),
-  userId: integer("user_id")
-    .notNull()
-    .references(() => users.id),
-  mealType: MealType('meal_type').notNull(), // Enum to restrict to 'breakfast', 'lunch', or 'dinner'
-  mealTime: timestamp("meal_time").notNull().defaultNow(),
-  mealCount: integer("meal_count").notNull().default(1), // Number of meals
-  guestMealCount: integer("guest_meal_count").notNull().default(0), // Number of guest meals
-  comment: text("comment"), // Optional comment for meal details
-  price: integer("price"), // Optional: Track price if needed
-  date: timestamp("date").notNull().defaultNow(), // Date of the meal entry
-  isApproved: boolean("is_approved").notNull().default(false), // Approval status
-});
+export const teamMealDetails = pgTable(
+  "team_meal_details",
+  {
+    id: serial("id").primaryKey(),
+    teamId: varchar("team_id")
+      .notNull()
+      .references(() => teams.teamCode),
+    userId: integer("user_id")
+      .notNull()
+      .references(() => users.id),
+    mealType: MealType("meal_type").notNull(), // Enum to restrict to 'breakfast', 'lunch', or 'dinner'
+    mealTime: timestamp("meal_time").notNull().defaultNow(),
+    mealCount: integer("meal_count").notNull().default(1), // Number of meals
+    guestMealCount: integer("guest_meal_count").notNull().default(0), // Number of guest meals
+    comment: text("comment"), // Optional comment for meal details
+    price: integer("price"), // Optional: Track price if needed
+    date: timestamp("date").notNull().defaultNow(), // Date of the meal entry
+    isApproved: boolean("is_approved").notNull().default(false), // Approval status
+  },
+  (table) => ({
+    uniqueTeamMeal: unique().on(
+      table.teamId,
+      table.userId,
+      table.mealType,
+      table.date
+    ),
+  })
+);
+
 
 
 export const activityLogs = pgTable("activity_logs", {

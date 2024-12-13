@@ -9,6 +9,7 @@ import {
   Dialog,
   DialogContent,
   DialogDescription,
+  DialogFooter,
   DialogHeader,
   DialogTitle,
   DialogTrigger,
@@ -27,7 +28,7 @@ interface DayBooking {
   [date: string]: MealBooking
 }
 
-export default function BookingCalendar() {
+export default function BookingCalendar({slug}: {slug: number}) {
   const router = useRouter()
   const [currentMonth, setCurrentMonth] = useState<Date>(new Date())
   const [bookings, setBookings] = useState<DayBooking>({})
@@ -171,6 +172,11 @@ export default function BookingCalendar() {
                   </div>
                 ))}
             </div>
+            <DialogFooter>
+              <Button variant="default" onClick={() => alert("Meals booked!")}>
+                Book Meals
+              </Button>
+            </DialogFooter>
           </DialogContent>
         </Dialog>
       </div>

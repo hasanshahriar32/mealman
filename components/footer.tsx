@@ -40,7 +40,7 @@ export default function Footer() {
               Developed by{" "}
               <Link
                 className="border-b text-gray-400 hover:text-gray-600"
-                href={`https://shahriarhasan.vercel.app?ref=${baseUrl}`}
+                href={`https://shahriarhasan.vercel.app?ref=https://mealman.vercel.app`}
                 target="_blank"
                 rel="noopener noreferrer"
               >

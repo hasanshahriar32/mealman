@@ -1,3 +1,4 @@
+"use client";
 import {
   Table,
   TableBody,
@@ -12,6 +13,7 @@ import { User } from "@/utils/mockData"
 import { usePagination } from "@/hooks/usePagination"
 import { TeamDataWithMembers } from "@/lib/db/schema"
 import Link from "next/link"
+import { useRouter } from "next/navigation";
 
 interface DataTableProps {
   data: User[];
@@ -19,6 +21,7 @@ interface DataTableProps {
 }
 
 export function DataTable({ data, itemsPerPage }: DataTableProps) {
+  const router = useRouter();
   const { currentPage, totalPages, paginatedItems, goToPage } = usePagination(data, itemsPerPage);
 
   return (
@@ -46,8 +49,12 @@ export function DataTable({ data, itemsPerPage }: DataTableProps) {
                 </Link>
               </TableCell>
               <TableCell>
-                <Button variant="outline" size="sm">
-                  Edit
+                <Button
+                  onClick={() => router.push(`schedule/book/${user?.id}`)}
+                  variant="outline"
+                  size="sm"
+                >
+                  Book
                 </Button>
               </TableCell>
             </TableRow>

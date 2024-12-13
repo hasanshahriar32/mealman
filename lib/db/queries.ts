@@ -1,6 +1,6 @@
 import { desc, and, eq, isNull } from 'drizzle-orm';
 import { db } from './drizzle';
-import { activityLogs, teamMembers, teams, users } from './schema';
+import { activityLogs, teamMealDetails, teamMembers, teams, users } from './schema';
 import { cookies } from 'next/headers';
 import { verifyToken } from '@/lib/auth/session';
 
@@ -190,4 +190,49 @@ export async function getTeamDetail(teamId: number) {
   }
 
   return team;
+}
+
+// create meal for a user
+
+export async function createUserMeal(
+  teamId: number,
+  meal: {
+    mealTime: Date;
+    mealType: "breakfast" | "lunch" | "dinner";
+  }
+) {
+  const user = await getUser();
+  if (!user) {
+    throw new Error("User not authenticated");
+  }
+
+  const team = await db.query.teams.findFirst({
+    where: eq(teams.id, teamId),
+    with: {
+      teamMembers: {
+        where: eq(teamMembers.userId, user.id),
+      },
+    },
+  });
+
+  if (!team || team.teamMembers.length === 0) {
+    throw new Error("User is not a member of the team");
+  }
+
+  const mealDate = new Date(meal.mealTime);
+  const currentDate = new Date();
+  currentDate.setHours(0, 0, 0, 0); // Set to start of the day
+
+  if (mealDate <= currentDate) {
+    throw new Error("Meal date must be a future date");
+  }
+
+  return await db
+    .insert(teamMealDetails)
+    .values({
+      teamId: teamId.toString(),
+      userId: user.id,
+      ...meal,
+    })
+    .execute();
 }

@@ -1,0 +1,1 @@
+ALTER TABLE "team_meal_details" ALTER COLUMN "meal_time" DROP DEFAULT;

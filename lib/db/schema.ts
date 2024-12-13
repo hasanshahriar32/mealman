@@ -65,7 +65,7 @@ export const teamMealDetails = pgTable(
       .notNull()
       .references(() => users.id),
     mealType: MealType("meal_type").notNull(), // Enum to restrict to 'breakfast', 'lunch', or 'dinner'
-    mealTime: timestamp("meal_time").notNull().defaultNow(),
+    mealTime: timestamp("meal_time").notNull(),
     mealCount: integer("meal_count").notNull().default(1), // Number of meals
     guestMealCount: integer("guest_meal_count").notNull().default(0), // Number of guest meals
     comment: text("comment"), // Optional comment for meal details

@@ -4,7 +4,7 @@ import { useState } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { Button } from '@/components/ui/button';
-import { Users, Settings, Shield, Activity, Menu, Calendar, Clock, AlarmClockCheckIcon, DraftingCompass, CheckCircleIcon } from 'lucide-react';
+import { Users, Settings, Shield, Activity, Menu, Calendar, Clock, AlarmClockCheckIcon, DraftingCompass, CheckCircleIcon, BookMarkedIcon } from 'lucide-react';
 
 export default function DashboardLayout({
   children,
@@ -17,6 +17,7 @@ export default function DashboardLayout({
   const navItems = [
     { href: '/schedule', icon: Clock, label: 'Schedule' },
     { href: '/schedule/activity', icon: AlarmClockCheckIcon, label: 'Upcoming' },
+    { href: '/schedule/booking', icon: BookMarkedIcon, label: 'Booking' },
     { href: '/schedule/general', icon: Settings, label: 'Manage' },
     { href: '/schedule/create', icon: CheckCircleIcon, label: 'Create' },
   ];

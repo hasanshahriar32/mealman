@@ -42,7 +42,7 @@ export function DataTable({ data, itemsPerPage }: DataTableProps) {
               <TableCell>{user?.name}</TableCell>
               <TableCell>
                 <Link
-                  className="flex hover:text-blue-700 flex-row items-center justify-center gap-1"
+                  className="flex hover:text-orange-700 flex-row items-center justify-center gap-1"
                   href={`schedule/details/${user?.id}`}
                 >
                   Detail <ArrowUpRightFromCircleIcon className="w-3 h-3" />

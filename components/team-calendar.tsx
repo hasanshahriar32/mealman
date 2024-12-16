@@ -88,8 +88,8 @@ export function TeamCalendar({ teamMembers }: TeamCalendarProps) {
                   className={`
                     aspect-square flex flex-col items-center justify-center p-1 sm:p-2 rounded-lg
                     ${!isSameMonth(day, currentMonth) ? 'text-gray-400' : ''}
-                    ${isToday(day) ? 'bg-blue-100 font-semibold' : ''}
-                    hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-blue-500
+                    ${isToday(day) ? 'bg-orange-100 font-semibold' : ''}
+                    hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-orange-500
                   `}
                   onClick={() => handleDayClick(day, member)}
                 >

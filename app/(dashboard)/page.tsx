@@ -12,11 +12,11 @@ export default function HomePage() {
           <div className="lg:grid lg:grid-cols-12 lg:gap-8">
             <div className="sm:text-center md:max-w-2xl md:mx-auto lg:col-span-6 lg:text-left">
               <h1 className="text-4xl font-bold text-gray-900 tracking-tight sm:text-5xl md:text-6xl">
-                Amin Hostel
+                Mealman
                 <span className="block text-orange-500">Meal Count Manager</span>
               </h1>
               <p className="mt-3 text-base text-gray-500 sm:mt-5 sm:text-xl lg:text-lg xl:text-xl">
-                With Amin Hostel Meal Count Manager, you can easily manage your daily hostel meal count and generate reports. It's gonna be a great experience for you.
+                With (Mealman) Meal Count Manager, you can easily manage your daily hostel meal count and generate reports. It's gonna be a great experience for you.
               </p>
               <div className="mt-8 sm:max-w-lg sm:mx-auto sm:text-center lg:text-left lg:mx-0">
                 <Link

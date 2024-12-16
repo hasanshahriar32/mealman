@@ -12,11 +12,11 @@ export const viewport: Viewport = {
 
 const manrope = Manrope({ subsets: ['latin'] });
 
-const APP_NAME = "Amin Hostel";
+const APP_NAME = "Mealman";
 const APP_DEFAULT_TITLE = "Meal Count Manager";
 const APP_TITLE_TEMPLATE = "%s - PWA App";
 const APP_DESCRIPTION =
-  "With Amin Hostel Meal Count Manager, you can easily manage your daily hostel meal count and generate reports. It's gonna be a great experience for you.";
+  "With Mealman -> Meal Count Manager, you can easily manage your daily hostel meal count and generate reports. It's gonna be a great experience for you.";
 
 export const metadata: Metadata = {
   applicationName: APP_NAME,

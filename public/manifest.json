@@ -4,7 +4,7 @@
   "protocol_handlers": [{ "protocol": "mailto", "url": "/newEmail?to=%s" }],
   "name": "Meal Count Manager",
   "short_name": "Meal Count",
-  "description": "With Amin Hostel Meal Count Manager, you can easily manage your daily hostel meal count and generate reports. It's gonna be a great experience for you⚡",
+  "description": "With (Mealman) Meal Count Manager, you can easily manage your daily hostel meal count and generate reports. It's gonna be a great experience for you⚡",
   "theme_color": "#F97316",
   "background_color": "#FFFFFF",
   "icons": [

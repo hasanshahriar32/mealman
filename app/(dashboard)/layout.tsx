@@ -37,12 +37,21 @@ function Header() {
           </span>
         </Link>
         <div className="flex items-center space-x-4">
-          <Link
-            href="/pricing"
-            className="text-sm font-medium text-gray-700 hover:text-gray-900"
-          >
-            Pricing
-          </Link>
+          {user ? (
+            <Link
+              href="/team"
+              className="text-sm font-medium text-gray-700 hover:text-gray-900"
+            >
+              Team
+            </Link>
+          ) : (
+            <Link
+              href="/sign-in"
+              className="text-sm font-medium text-gray-700 hover:text-gray-900"
+            >
+              Login
+            </Link>
+          )}
           {user ? (
             <DropdownMenu open={isMenuOpen} onOpenChange={setIsMenuOpen}>
               <DropdownMenuTrigger asChild>
@@ -63,7 +72,7 @@ function Header() {
                     <span>Dashboard</span>
                   </Link>
                 </DropdownMenuItem>
-                <DropdownMenuItem className="cursor-pointer">
+                {/* <DropdownMenuItem className="cursor-pointer">
                   <Link href="/schedule" className="flex w-full items-center">
                     <Clock1Icon className="mr-2 h-4 w-4" />
                     <span>Schedule</span>
@@ -74,7 +83,7 @@ function Header() {
                     <InfoIcon className="mr-2 h-4 w-4" />
                     <span>Posts</span>
                   </Link>
-                </DropdownMenuItem>
+                </DropdownMenuItem> */}
                 <form action={handleSignOut} className="w-full">
                   <button type="submit" className="flex w-full">
                     <DropdownMenuItem className="w-full flex-1 cursor-pointer">

@@ -5,42 +5,68 @@ import {
   text,
   timestamp,
   integer,
+  boolean,
+  pgEnum,
+  unique,
 } from 'drizzle-orm/pg-core';
 import { relations } from 'drizzle-orm';
 
-export const users = pgTable('users', {
-  id: serial('id').primaryKey(),
-  name: varchar('name', { length: 100 }),
-  email: varchar('email', { length: 255 }).notNull().unique(),
-  passwordHash: text('password_hash').notNull(),
-  role: varchar('role', { length: 20 }).notNull().default('member'),
-  createdAt: timestamp('created_at').notNull().defaultNow(),
-  updatedAt: timestamp('updated_at').notNull().defaultNow(),
-  deletedAt: timestamp('deleted_at'),
+export const users = pgTable("users", {
+  id: serial("id").primaryKey(),
+  name: varchar("name", { length: 100 }),
+  email: varchar("email", { length: 255 }).notNull().unique(),
+  passwordHash: text("password_hash").notNull(),
+  role: varchar("role", { length: 20 }).notNull().default("member"),
+  createdAt: timestamp("created_at").notNull().defaultNow(),
+  updatedAt: timestamp("updated_at").notNull().defaultNow(),
+  deletedAt: timestamp("deleted_at"),
+  isDeleted: boolean("is_verified").notNull().default(false),
 });
 
-export const teams = pgTable('teams', {
-  id: serial('id').primaryKey(),
-  name: varchar('name', { length: 100 }).notNull(),
-  createdAt: timestamp('created_at').notNull().defaultNow(),
-  updatedAt: timestamp('updated_at').notNull().defaultNow(),
-  stripeCustomerId: text('stripe_customer_id').unique(),
-  stripeSubscriptionId: text('stripe_subscription_id').unique(),
-  stripeProductId: text('stripe_product_id'),
-  planName: varchar('plan_name', { length: 50 }),
-  subscriptionStatus: varchar('subscription_status', { length: 20 }),
-});
-
-export const teamMembers = pgTable('team_members', {
-  id: serial('id').primaryKey(),
-  userId: integer('user_id')
+export const teams = pgTable("teams", {
+  id: serial("id").primaryKey(),
+  name: varchar("name", { length: 100 }).notNull(),
+  teamCode: varchar("team_code", { length: 5 })
+    .unique()
     .notNull()
-    .references(() => users.id),
-  teamId: integer('team_id')
+    .default("te_st"),
+  createdAt: timestamp("created_at").notNull().defaultNow(),
+  updatedAt: timestamp("updated_at").notNull().defaultNow(),
+  stripeCustomerId: text("stripe_customer_id").unique(),
+  stripeSubscriptionId: text("stripe_subscription_id").unique(),
+  stripeProductId: text("stripe_product_id"),
+  planName: varchar("plan_name", { length: 50 }),
+  subscriptionStatus: varchar("subscription_status", { length: 20 }),
+  isActive: boolean("is_verified").notNull().default(true),
+});
+
+export const schedules = pgTable("schedules", {
+  id: serial("id").primaryKey(),
+  name: varchar("name", { length: 100 }).notNull(),
+  teamId: integer("team_id")
     .notNull()
     .references(() => teams.id),
-  role: varchar('role', { length: 50 }).notNull(),
-  joinedAt: timestamp('joined_at').notNull().defaultNow(),
+  createdAt: timestamp("created_at").notNull().defaultNow(),
+  updatedAt: timestamp("updated_at").notNull().defaultNow(),
+  startDate: timestamp("start_date").notNull().defaultNow(),
+  endDate: timestamp("end_date").notNull(),
+  planName: varchar("plan_name", { length: 50 }),
+  subscriptionStatus: varchar("subscription_status", { length: 20 }),
+  isActive: boolean("is_verified").notNull().default(true),
+});
+
+export const teamMembers = pgTable("team_members", {
+  id: serial("id").primaryKey(),
+  userId: integer("user_id")
+    .notNull()
+    .references(() => users.id),
+  teamId: integer("team_id")
+    .notNull()
+    .references(() => teams.id),
+  role: varchar("role", { length: 50 }).notNull(),
+  joinedAt: timestamp("joined_at").notNull().defaultNow(),
+  isVerified: boolean("is_verified").notNull().default(false),
+  isActive: boolean("is_verified").notNull().default(true),
 });
 
 export const activityLogs = pgTable('activity_logs', {
@@ -68,8 +94,41 @@ export const invitations = pgTable('invitations', {
   status: varchar('status', { length: 20 }).notNull().default('pending'),
 });
 
+export const MealType = pgEnum("meal_type", ["breakfast", "lunch", "dinner"]);
+
+export const scheduleMealDetails = pgTable(
+  "schedule_meal_details",
+  {
+    id: serial("id").primaryKey(),
+    scheduleId: integer("schedule_id")
+      .notNull()
+      .references(() => schedules.id),
+    userId: integer("user_id")
+      .notNull()
+      .references(() => users.id),
+    mealType: MealType("meal_type").notNull(), // Enum to restrict to 'breakfast', 'lunch', or 'dinner'
+    mealTime: timestamp("meal_time").notNull(),
+    mealCount: integer("meal_count").notNull().default(1), // Number of meals
+    guestMealCount: integer("guest_meal_count").notNull().default(0), // Number of guest meals
+    comment: text("comment"), // Optional comment for meal details
+    price: integer("price"), // Optional: Track price if needed
+    date: timestamp("date").notNull().defaultNow(), // Date of the meal entry
+    isApproved: boolean("is_approved").notNull().default(true), // Approval status
+  },
+  (table) => ({
+    uniqueScheduleMeal: unique().on(
+      table.scheduleId,
+      table.userId,
+      table.mealType,
+      table.date
+    ),
+  })
+);
+
+
 export const teamsRelations = relations(teams, ({ many }) => ({
   teamMembers: many(teamMembers),
+  schedules: many(schedules),
   activityLogs: many(activityLogs),
   invitations: many(invitations),
 }));
@@ -111,6 +170,20 @@ export const activityLogsRelations = relations(activityLogs, ({ one }) => ({
     references: [users.id],
   }),
 }));
+
+export const scheduleMealDetailsRelations = relations(
+  scheduleMealDetails,
+  ({ one }) => ({
+    schedule: one(schedules, {
+      fields: [scheduleMealDetails.scheduleId],
+      references: [schedules.id],
+    }),
+    user: one(users, {
+      fields: [scheduleMealDetails.userId],
+      references: [users.id],
+    }),
+  })
+);
 
 export type User = typeof users.$inferSelect;
 export type NewUser = typeof users.$inferInsert;

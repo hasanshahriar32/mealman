@@ -20,7 +20,7 @@ export default function Error({
         {error.message || 'Something went wrong. Try reloading the page'}
       </h2>
       <button
-        className="mt-4 rounded-md bg-violet-500 px-4 py-2 text-sm text-white transition-colors hover:bg-violet-400"
+        className="mt-4 rounded-md bg-orange-500 px-4 py-2 text-sm text-white transition-colors hover:bg-violet-400"
         onClick={
           // Attempt to recover by trying to re-render the invoices route
           () => reset()

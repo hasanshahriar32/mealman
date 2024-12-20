@@ -1,5 +1,5 @@
 {
-  "id": "9d7558e5-fee1-49f3-b0ae-5ec87e395e43",
+  "id": "edf3a82a-667d-45e6-86d0-6939084a4354",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "version": "7",
   "dialect": "postgresql",
@@ -339,8 +339,8 @@
           "primaryKey": false,
           "notNull": false
         },
-        "is_verified": {
-          "name": "is_verified",
+        "is_active_schedule": {
+          "name": "is_active_schedule",
           "type": "boolean",
           "primaryKey": false,
           "notNull": true,
@@ -401,8 +401,15 @@
           "notNull": true,
           "default": "now()"
         },
-        "is_verified": {
-          "name": "is_verified",
+        "is_verified_member": {
+          "name": "is_verified_member",
+          "type": "boolean",
+          "primaryKey": false,
+          "notNull": true,
+          "default": false
+        },
+        "is_active_member": {
+          "name": "is_active_member",
           "type": "boolean",
           "primaryKey": false,
           "notNull": true,
@@ -508,8 +515,8 @@
           "primaryKey": false,
           "notNull": false
         },
-        "is_verified": {
-          "name": "is_verified",
+        "is_active_team": {
+          "name": "is_active_team",
           "type": "boolean",
           "primaryKey": false,
           "notNull": true,
@@ -598,8 +605,8 @@
           "primaryKey": false,
           "notNull": false
         },
-        "is_verified": {
-          "name": "is_verified",
+        "is_deleted_user": {
+          "name": "is_deleted_user",
           "type": "boolean",
           "primaryKey": false,
           "notNull": true,

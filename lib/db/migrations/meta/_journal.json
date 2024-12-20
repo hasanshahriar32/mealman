@@ -5,15 +5,8 @@
     {
       "idx": 0,
       "version": "7",
-      "when": 1734690399979,
-      "tag": "0000_glamorous_chronomancer",
-      "breakpoints": true
-    },
-    {
-      "idx": 1,
-      "version": "7",
-      "when": 1734690807837,
-      "tag": "0001_spooky_darwin",
+      "when": 1734691382067,
+      "tag": "0000_high_la_nuit",
       "breakpoints": true
     }
   ]

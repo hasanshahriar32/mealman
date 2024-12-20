@@ -48,7 +48,7 @@ CREATE TABLE IF NOT EXISTS "schedules" (
 	"end_date" timestamp NOT NULL,
 	"plan_name" varchar(50),
 	"subscription_status" varchar(20),
-	"is_verified" boolean DEFAULT true NOT NULL
+	"is_active_schedule" boolean DEFAULT true NOT NULL
 );
 --> statement-breakpoint
 CREATE TABLE IF NOT EXISTS "team_members" (
@@ -57,7 +57,8 @@ CREATE TABLE IF NOT EXISTS "team_members" (
 	"team_id" integer NOT NULL,
 	"role" varchar(50) NOT NULL,
 	"joined_at" timestamp DEFAULT now() NOT NULL,
-	"is_verified" boolean DEFAULT true NOT NULL
+	"is_verified_member" boolean DEFAULT false NOT NULL,
+	"is_active_member" boolean DEFAULT true NOT NULL
 );
 --> statement-breakpoint
 CREATE TABLE IF NOT EXISTS "teams" (
@@ -71,7 +72,7 @@ CREATE TABLE IF NOT EXISTS "teams" (
 	"stripe_product_id" text,
 	"plan_name" varchar(50),
 	"subscription_status" varchar(20),
-	"is_verified" boolean DEFAULT true NOT NULL,
+	"is_active_team" boolean DEFAULT true NOT NULL,
 	CONSTRAINT "teams_team_code_unique" UNIQUE("team_code"),
 	CONSTRAINT "teams_stripe_customer_id_unique" UNIQUE("stripe_customer_id"),
 	CONSTRAINT "teams_stripe_subscription_id_unique" UNIQUE("stripe_subscription_id")
@@ -86,7 +87,7 @@ CREATE TABLE IF NOT EXISTS "users" (
 	"created_at" timestamp DEFAULT now() NOT NULL,
 	"updated_at" timestamp DEFAULT now() NOT NULL,
 	"deleted_at" timestamp,
-	"is_verified" boolean DEFAULT false NOT NULL,
+	"is_deleted_user" boolean DEFAULT false NOT NULL,
 	CONSTRAINT "users_email_unique" UNIQUE("email")
 );
 --> statement-breakpoint

@@ -20,7 +20,7 @@ export const users = pgTable("users", {
   createdAt: timestamp("created_at").notNull().defaultNow(),
   updatedAt: timestamp("updated_at").notNull().defaultNow(),
   deletedAt: timestamp("deleted_at"),
-  isDeleted: boolean("is_verified").notNull().default(false),
+  isDeleted: boolean("is_deleted_user").notNull().default(false),
 });
 
 export const teams = pgTable("teams", {
@@ -37,7 +37,7 @@ export const teams = pgTable("teams", {
   stripeProductId: text("stripe_product_id"),
   planName: varchar("plan_name", { length: 50 }),
   subscriptionStatus: varchar("subscription_status", { length: 20 }),
-  isActive: boolean("is_verified").notNull().default(true),
+  isActive: boolean("is_active_team").notNull().default(true),
 });
 
 export const schedules = pgTable("schedules", {
@@ -52,7 +52,7 @@ export const schedules = pgTable("schedules", {
   endDate: timestamp("end_date").notNull(),
   planName: varchar("plan_name", { length: 50 }),
   subscriptionStatus: varchar("subscription_status", { length: 20 }),
-  isActive: boolean("is_verified").notNull().default(true),
+  isActive: boolean("is_active_schedule").notNull().default(true),
 });
 
 export const teamMembers = pgTable("team_members", {
@@ -65,8 +65,8 @@ export const teamMembers = pgTable("team_members", {
     .references(() => teams.id),
   role: varchar("role", { length: 50 }).notNull(),
   joinedAt: timestamp("joined_at").notNull().defaultNow(),
-  isVerified: boolean("is_verified").notNull().default(false),
-  isActive: boolean("is_verified").notNull().default(true),
+  isVerified: boolean("is_verified_member").notNull().default(false),
+  isActive: boolean("is_active_member").notNull().default(true),
 });
 
 export const activityLogs = pgTable('activity_logs', {

@@ -18,6 +18,7 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover"
+import { useRouter } from "next/navigation"
 
 // const frameworks = [
 //   {
@@ -51,6 +52,8 @@ type TeamNavigationProps = {
 export default function TeamNavigation({ teamData }: TeamNavigationProps) {
   const [open, setOpen] = React.useState(false)
   const [value, setValue] = React.useState("")
+  const router = useRouter()
+  console.log(teamData)
 
   return (
     <Popover open={open} onOpenChange={setOpen}>
@@ -59,10 +62,10 @@ export default function TeamNavigation({ teamData }: TeamNavigationProps) {
           variant="outline"
           role="combobox"
           aria-expanded={open}
-          className="w-[200px] justify-between"
+          className="max-w-[150px] justify-between"
         >
           {value
-            ? teamData.find((team: any) => team.id === value)?.name
+            ? teamData.find((team: any) => team.teamCode === value)?.name
             : "Select team..."}
           <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
         </Button>
@@ -76,16 +79,17 @@ export default function TeamNavigation({ teamData }: TeamNavigationProps) {
               {teamData?.map((team: any) => (
                 <CommandItem
                   key={team.id}
-                  value={team.id}
+                  value={team.teamCode}
                   onSelect={(currentValue) => {
-                    setValue(currentValue === value ? "" : currentValue)
-                    setOpen(false)
+                    setValue(currentValue === value ? "" : currentValue);
+                    setOpen(false);
+                    router.push(`/${currentValue}`);
                   }}
                 >
                   <Check
                     className={cn(
                       "mr-2 h-4 w-4",
-                      value === team.id ? "opacity-100" : "opacity-0"
+                      value === team.teamCode ? "opacity-100" : "opacity-0"
                     )}
                   />
                   {team.name}
@@ -96,5 +100,5 @@ export default function TeamNavigation({ teamData }: TeamNavigationProps) {
         </Command>
       </PopoverContent>
     </Popover>
-  )
+  );
 }

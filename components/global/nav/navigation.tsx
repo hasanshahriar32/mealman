@@ -15,17 +15,15 @@ const Navigation = async () => {
     return user;
   });
   
-  if (!user) {
-    redirect('/sign-in');
-  }
+  // if (!user) {
+  //   redirect('/sign-in');
+  // }
+  //@ts-expect-error
+  const teamData = await getTeamForUser(user?.id);
 
-  const teamData = await getTeamForUser(user.id);
-
-  if (!teamData) {
-    throw new Error('Team not found');
-  }
-  
-  console.log(teamData);
+  // if (!teamData) {
+  //   throw new Error('Team not found');
+  // }
 
   return (
     <header className="border-b border-gray-200">
@@ -42,12 +40,6 @@ const Navigation = async () => {
           </span>
         </div>
         <div className="flex items-center space-x-4">
-          <Link
-            href="/pricing"
-            className="text-sm font-medium text-gray-700 hover:text-gray-900"
-          >
-            Pricing
-          </Link>
           <NavMenu />
         </div>
       </div>

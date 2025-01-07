@@ -30,13 +30,17 @@ const Navigation = async () => {
   return (
     <header className="border-b border-gray-200">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 flex justify-between items-center">
-        <Link href="/" className="flex items-center">
-          <CircleIcon className="h-6 w-6 text-orange-500" />
+        <div className="flex items-center">
+          <Link href="/">
+            <CircleIcon className="h-6 w-6 text-orange-500" />
+            {/* <span className="ml-2 text-xl font-semibold text-gray-900">
+            AminMess
+          </span> */}
+          </Link>
           <span className="ml-2 text-xl font-semibold text-gray-900">
-            {/* AminMess */}
-          <TeamNavigation teamData={teamData} />
+            <TeamNavigation teamData={[teamData]} />
           </span>
-        </Link>
+        </div>
         <div className="flex items-center space-x-4">
           <Link
             href="/pricing"

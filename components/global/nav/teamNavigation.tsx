@@ -19,6 +19,7 @@ import {
   PopoverTrigger,
 } from "@/components/ui/popover"
 import { useRouter } from "next/navigation"
+import { usePathname } from 'next/navigation'
 
 // const frameworks = [
 //   {
@@ -53,7 +54,12 @@ export default function TeamNavigation({ teamData }: TeamNavigationProps) {
   const [open, setOpen] = React.useState(false)
   const [value, setValue] = React.useState("")
   const router = useRouter()
-  console.log(teamData)
+  const pathname = usePathname().split('/')[1]
+  
+  React.useEffect(() => {
+    setValue(pathname)
+  },
+  [pathname])
 
   return (
     <Popover open={open} onOpenChange={setOpen}>
@@ -62,7 +68,7 @@ export default function TeamNavigation({ teamData }: TeamNavigationProps) {
           variant="outline"
           role="combobox"
           aria-expanded={open}
-          className="max-w-[150px] justify-between"
+          className="max-w-[150px] overflow-hidden justify-between"
         >
           {value
             ? teamData.find((team: any) => team.teamCode === value)?.name

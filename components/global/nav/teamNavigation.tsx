@@ -61,6 +61,7 @@ export default function TeamNavigation({ teamData }: TeamNavigationProps) {
   },
   [pathname])
 
+  
   return (
     <Popover open={open} onOpenChange={setOpen}>
       <PopoverTrigger asChild>

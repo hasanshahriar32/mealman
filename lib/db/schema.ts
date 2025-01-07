@@ -25,7 +25,7 @@ export const users = pgTable("users", {
 
 export const teams = pgTable("teams", {
   id: serial("id").primaryKey(),
-  name: varchar("name", { length: 100 }).notNull(),
+  name: varchar("name", { length: 30 }).notNull(),
   teamCode: varchar("team_code", { length: 5 })
     .unique()
     .notNull()
@@ -42,7 +42,7 @@ export const teams = pgTable("teams", {
 
 export const schedules = pgTable("schedules", {
   id: serial("id").primaryKey(),
-  name: varchar("name", { length: 100 }).notNull(),
+  name: varchar("name", { length: 40 }).notNull(),
   teamId: integer("team_id")
     .notNull()
     .references(() => teams.id),

@@ -25,7 +25,7 @@ export default function Document() {
       <body>
         <Main />
         <NextScript />
-        <div style={{ maxWidth: '600px', margin: '0 auto', padding: '16px' }} id="giscus-container"></div>
+        {/* <div style={{ maxWidth: '600px', margin: '0 auto', padding: '16px' }} id="giscus-container"></div>
         <script
           dangerouslySetInnerHTML={{
             __html: `
@@ -47,7 +47,7 @@ export default function Document() {
               })();
             `,
           }}
-        ></script>
+        ></script> */}
       </body>
     </Html>
   );

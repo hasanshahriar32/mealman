@@ -57,7 +57,7 @@ const PwaInstall = () => {
   return (
     <Button
       size="lg"
-      className="bg-white hover:bg-gray-100 text-black border border-gray-200 rounded-full text-xl px-12 py-6 inline-flex items-center justify-center"
+      className="bg-white hover:bg-gray-100 text-black border hover:text-gray-900 border-gray-200 rounded-full text-xl px-12 py-6 inline-flex items-center justify-center"
       variant={"outline"}
       style={{ display: deferredPrompt ? "flex" : "none" }}
       onClick={handleInstallClick}

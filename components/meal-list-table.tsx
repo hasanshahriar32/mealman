@@ -71,7 +71,7 @@ export function MealListTable({ teamMembers }: MealListTableProps) {
           <PaginationItem>
             <PaginationPrevious 
               onClick={() => setCurrentPage(prev => Math.max(prev - 1, 1))}
-              disabled={currentPage === 1}
+              style={{ pointerEvents: currentPage === 1 ? 'none' : 'auto', opacity: currentPage === 1 ? 0.5 : 1 }}
             />
           </PaginationItem>
           {[...Array(Math.ceil(teamMembers.length / itemsPerPage))].map((_, index) => (
@@ -87,7 +87,7 @@ export function MealListTable({ teamMembers }: MealListTableProps) {
           <PaginationItem>
             <PaginationNext 
               onClick={() => setCurrentPage(prev => Math.min(prev + 1, Math.ceil(teamMembers.length / itemsPerPage)))}
-              disabled={currentPage === Math.ceil(teamMembers.length / itemsPerPage)}
+              style={{ pointerEvents: currentPage === Math.ceil(teamMembers.length / itemsPerPage) ? 'none' : 'auto', opacity: currentPage === Math.ceil(teamMembers.length / itemsPerPage) ? 0.5 : 1 }}
             />
           </PaginationItem>
         </PaginationContent>

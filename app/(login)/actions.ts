@@ -25,6 +25,8 @@ import {
   validatedAction,
   validatedActionWithUser,
 } from '@/lib/auth/middleware';
+import { nanoid } from 'nanoid'; // Import nanoid
+
 
 async function logActivity(
   teamId: number | null | undefined,
@@ -211,7 +213,7 @@ export async function signOut() {
 const updatePasswordSchema = z
   .object({
     currentPassword: z.string().min(8).max(100),
-    newPassword: z.string().min(8).max(100),
+    newPassword: z.string().min(8).max(100), 
     confirmPassword: z.string().min(8).max(100),
   })
   .refine((data) => data.newPassword === data.confirmPassword, {
@@ -418,5 +420,115 @@ export const inviteTeamMember = validatedActionWithUser(
     // await sendInvitationEmail(email, userWithTeam.team.name, role)
 
     return { success: 'Invitation sent successfully' };
+  }
+);
+
+// Schema for creating a team
+const createTeamSchema = z.object({
+  name: z.string().min(1, 'Team name is required').max(100),
+  startDate: z.string(), // Take start date from user input
+  endDate: z.string().optional(), // Take end date from user input
+});
+
+// Function to create a new team
+export const createTeam = validatedActionWithUser(
+  createTeamSchema,
+  async (data, _, user) => {
+    const { name, startDate: startDateString, endDate: endDateString } = data;
+    const startDate = new Date(startDateString);
+    const endDate = endDateString ? new Date(endDateString) : undefined;
+
+    // Generate a unique team code using nanoid
+    const teamCode = nanoid(5);
+
+    // Insert new team into the teams table
+    const newTeam = {
+      name,
+      teamCode, // Add the generated team code here
+      adminId: user.id,
+      startDate,
+      endDate,
+    };
+    const [createdTeam] = await db.insert(teams).values([newTeam]).returning();
+
+
+    if (!createdTeam) {
+      return { error: 'Failed to create team. Please try again.' };
+    }
+
+    // Add the user as the team owner in teamMembers table
+    const newTeamMember = {
+      userId: user.id,
+      teamId: createdTeam.teamCode,
+      role: 'owner',
+      isVerified: true,
+    };
+
+    // await db.insert(teamMembers).values(newTeamMember);
+
+    // Log the team creation activity
+    // await logActivity(createdTeam.teamCode, user.id, ActivityType.CREATE_TEAM);
+
+    return { success: 'Team created successfully', 
+      team: createdTeam 
+    };
+  }
+);
+
+const joinTeamSchema = z.object({
+  teamCode: z.string().min(5, "Invalid team code").max(10),
+});
+
+export const joinTeam = validatedActionWithUser(
+  joinTeamSchema,
+  async (data, _, user) => {
+    const { teamCode } = data;
+
+    // Check if the team exists
+    const team = await db
+      .select()
+      .from(teams)
+      .where(eq(teams.teamCode, teamCode))
+      .limit(1);
+
+    if (team.length === 0) {
+      return { error: "Invalid team code. Please try again." };
+    }
+
+    const [foundTeam] = team;
+
+    // Check if the user is already a member of the team
+    const existingMember = await db
+      .select()
+      .from(teamMembers)
+      .where(
+        and(
+          eq(teamMembers.userId, user.id),
+          // eq(teamMembers.teamId, foundTeam.teamCode)
+        )
+      )
+      .limit(1);
+
+    if (existingMember.length > 0) {
+      return { error: "You are already a member of this team." };
+    }
+
+    // Add the user to the team
+    // const newTeamMember: NewTeamMember = {
+    //   userId: user.id,
+      // teamId: foundTeam.teamCode,
+    //   role: "member", // Default role as 'member'
+    // };
+
+    // await db.insert(teamMembers).values(newTeamMember);
+
+    // Log the activity
+    // await logActivity(
+    //   foundTeam.teamCode,
+    //   user.id,
+    //   ActivityType.ACCEPT_INVITATION
+    // );
+
+    return { success: "Successfully joined the team!" };
   }
 );

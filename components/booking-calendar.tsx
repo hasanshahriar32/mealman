@@ -109,7 +109,8 @@ export default function BookingCalendar({slug}: {slug: number}) {
               disabled: { opacity: 0.5 },
             }}
             components={{
-              DayContent: ({ date }) => (
+              //@ts-expect-error
+              DayContent: ({ date }: { date: Date }) => (
                 <div className="flex flex-col items-center justify-center h-full">
                   <span className="text-sm md:text-base">
                     {format(date, "d")}

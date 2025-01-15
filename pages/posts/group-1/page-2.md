@@ -1,9 +1,7 @@
-# Page 2
-
--—\
-title: markdown example\
-date: 2021/3/19\
+---
+title: markdown example
+date: 2021/3/19
 description: View examples of all possible Markdown options.\
-tag: microwave\
-author: You\
-\---
+tag: microwave
+author: You
+---

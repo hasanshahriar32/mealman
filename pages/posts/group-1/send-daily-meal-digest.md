@@ -1,6 +1,6 @@
 # Send Daily Meal Digest
 
--— title: Microwave study date: 2021/3/19 description: View examples of all possible Markdown options. tag: microwave author: You ---
+\--- title: Microwave study\n date: 2021/3/19 description: View examples of all possible Markdown options. tag: microwave author: You ---
 
 
 

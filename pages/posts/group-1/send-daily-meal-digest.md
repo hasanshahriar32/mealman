@@ -1,21 +1,5 @@
 # Send Daily Meal Digest
 
-\---&#x20;
-
-title: Microwave study
-
-date: 2021/3/19&#x20;
-
-description: View examples of all possible Markdown options.&#x20;
-
-tag: microwave&#x20;
-
-author: You&#x20;
-
-\---
-
-
-
 ### Pages with Dynamic Routes
 
 Next.js supports pages with dynamic routes. For example, if you create a file called `pages/posts/[id].js`, then it will be accessible at `posts/1`, `posts/2`, etc.

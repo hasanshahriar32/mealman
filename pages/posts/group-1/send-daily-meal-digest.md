@@ -1,18 +1,12 @@
 # Send Daily Meal Digest
 
-***
-
-title: microwave study
-
-date: 2025/1/15
-
-description: View examples of all possible Markdown options.
-
-tag: microwave
-
-author: you
-
-***
+\---\
+title: Microwave study\
+date: 2021/3/19\
+description: View examples of all possible Markdown options.\
+tag: microwave\
+author: You\
+\---
 
 
 

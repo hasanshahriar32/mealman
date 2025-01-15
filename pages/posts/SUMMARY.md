@@ -1,6 +1,6 @@
 # Table of contents
 
-* [Next.js Pages](README.md)
+* [README.md](README.md)
 
 ## Group 1
 

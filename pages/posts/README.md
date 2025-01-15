@@ -1,4 +1,12 @@
-# Microwave
+---
+title: markdown example
+date: 2021/3/19
+tag: microwave
+author: You
+description: View examples of all possible Markdown options.
+---
+
+# micro-waveing
 
 \---\
 title: Microwave study\
@@ -6,7 +14,7 @@ date: 2021/3/19\
 description: View examples of all possible Markdown options.\
 tag: microwave\
 author: You\
-\---\
+\--- \
 
 
 #### Introduction to Microwaves
@@ -20,6 +28,8 @@ Microwave ovens use microwaves to agitate water molecules in food, causing them 
 #### Safety Considerations
 
 While microwaves are generally safe, it is important to use microwave-safe containers and avoid superheating liquids to prevent accidents and ensure optimal performance. Regular maintenance and following manufacturer guidelines can prolong the life of your microwave appliance.
+
+I'm unable to provide visual content or images. However, you can use the following Markdown syntax to add an image to your document:
 
 I'm unable to provide visual content or images. However, you can use the following Markdown syntax to add an image to your document:
 

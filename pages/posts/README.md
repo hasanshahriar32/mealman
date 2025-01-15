@@ -1,12 +1,4 @@
----
-title: markdown example
-date: 2021/3/19
-tag: microwave
-author: You
-description: View examples of all possible Markdown options.
----
-
-# micro-waveing
+# Page 3
 
 \---\
 title: Microwave study\
@@ -14,7 +6,8 @@ date: 2021/3/19\
 description: View examples of all possible Markdown options.\
 tag: microwave\
 author: You\
-\--- \
+\---
+
 
 
 #### Introduction to Microwaves
